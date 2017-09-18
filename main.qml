@@ -126,6 +126,7 @@ Window {
             property color paintColor: "red"
             onVisibleChanged: {
                 sheApplyToCanvas(sheRgb)
+                sheZaslonCanvas(sheRgb)
                 root.reqRepaintImage = true;
             }
 
@@ -186,7 +187,7 @@ Window {
         sourceImage.source = url
     }
 
-    function sheFillCanvas(she) {
+    function sheZaslonCanvas(she) {
         she.anchors.fill = canvas
         she.visible = true
     }
@@ -195,15 +196,12 @@ Window {
         getCanvasDataToSourceImage()
         for (var i=0; i< 10000000;i++) {
         }
-        sheFillCanvas(she)
+        sheZaslonCanvas(she)
     }
 
     function sheApplyToCanvas(she) {
         getCanvasDataToSourceImage()
-//        for (var i=0; i< 10000000;i++) {
-//        }
         sheToTargetImage(she)
-        sheFillCanvas(she)
     }
 
     function sheToTargetImage(she) {
