@@ -16,6 +16,7 @@ Window {
     function switchActiveToolbars(row) {
         switch(row) {
             case paintTools:
+                sheWave.visible = false
                 paintTools.visible = true;
                 sheRgbTool.visible = false
                 canvas.paintMode = true;
@@ -28,7 +29,8 @@ Window {
                 sheRgb.green = 1.0
                 sheRgb.blue = 1.0
                 break;
-            case cleanTool:
+            case waveTool:
+                waveTool.visible = true;
                 paintTools.visible = false;
                 sheRgbTool.visible = false;
                 break;
@@ -75,7 +77,8 @@ Window {
             id: lastButton
             text: "WAVE"
             onClicked: {
-                switchActiveToolbars(cleanTool)
+                sheActivate(sheWave)
+                switchActiveToolbars(waveTool)
             }
         }
 
@@ -104,7 +107,7 @@ Window {
 
             FancySlider {
                 id: sliderCanvasBrush
-                minimumValue: 0.1
+                minimumValue: 0.5
                 maximumValue: 30
                 value: 2.5
                 onValueChanged: {
@@ -115,7 +118,28 @@ Window {
     }
 
         Column {
-            id: cleanTool
+            id: waveTool
+            y: lastButton.y + lastButton.height + 20
+            visible: false
+            spacing: 5
+            FancySlider {
+                id: frequency
+                minimumValue: 1
+                maximumValue: 7.4
+                value: 4.2
+                onValueChanged: {
+                    sheWave.frequency = frequency.value
+                }
+            }
+            FancySlider {
+                id: amplitude
+                minimumValue: 0.01
+                maximumValue: 0.19
+                value: 0.1
+                onValueChanged: {
+                    sheWave.amplitude = amplitude.value
+                }
+            }
         }
 
         Column {
@@ -320,6 +344,30 @@ Window {
             uniform lowp float blue;
             void main() {
                 gl_FragColor = texture2D(source, qt_TexCoord0) * vec4(red, green, blue, 1.0) * qt_Opacity;
+            }"
+    }
+
+    ShaderEffect {
+        id: sheWave
+        property variant source: sourceImage
+        property real frequency: 4.2
+        property real amplitude: 0.1
+        property real time: 0.0
+        NumberAnimation on time {
+            from: 0; to: Math.PI*2; duration: 1000; loops: Animation.Infinite
+        }
+
+        fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform sampler2D source;
+            uniform lowp float qt_Opacity;
+            uniform highp float frequency;
+            uniform highp float amplitude;
+            uniform highp float time;
+            void main() {
+                highp vec2 pulse = sin(time - frequency * qt_TexCoord0);
+                highp vec2 coord = qt_TexCoord0 + amplitude * vec2(pulse.x, -pulse.x);
+                gl_FragColor = texture2D(source, coord) * qt_Opacity;
             }"
     }
 
