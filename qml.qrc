@@ -2,9 +2,12 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>ColorSquare.qml</file>
-        <file>sourceImage.png</file>
         <file>FancySlider.qml</file>
-        <file>RgbSlider.qml</file>
         <file>LeftMenuButton.qml</file>
+        <file>PaintTool.qml</file>
+        <file>logic.js</file>
+        <file>TextTool.qml</file>
+        <file>bck.jpg</file>
+        <file>sourceImage.png</file>
     </qresource>
 </RCC>

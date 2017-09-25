@@ -3,43 +3,26 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
+import "logic.js" as Logic
 
 Window {
     id: root
     visible: true
-    minimumWidth: 800 ;minimumHeight: 810
+    minimumWidth: 700 ;minimumHeight: 710
     width: buttonsColumn.width + canvas.width + 30
-    height: canvas.height + 30
-    color: "#333333"
+    height: canvas.height + 20
     property bool reqRepaintImage: false
 
-    function switchActiveToolbars(row) {
-        switch(row) {
-            case paintTools:
-                sheWave.visible = false
-                paintTools.visible = true;
-                sheRgbTool.visible = false
-                canvas.paintMode = true;
-                break;
-            case sheRgbTool:
-                paintTools.visible = false;
-                sheRgbTool.visible = true
-                canvas.paintMode = false
-                sheRgb.red = 1.0
-                sheRgb.green = 1.0
-                sheRgb.blue = 1.0
-                break;
-            case waveTool:
-                waveTool.visible = true;
-                paintTools.visible = false;
-                sheRgbTool.visible = false;
-                break;
-        }
+    Image {
+        id: bck
+        width: root.width
+        height: root.height
+        source: "bck.jpg"
     }
 
     Column {
         id: buttonsColumn
-        spacing: 3
+        spacing: 6
         x: parent.x + 10
         y: parent.y + 10
         ExclusiveGroup { id: excGroup}
@@ -50,46 +33,83 @@ Window {
             width: buttonsColumn.width
             text: "PAINT"
             onClicked: {
-                switchActiveToolbars(paintTools)
-            }
-        }
-
-        LeftMenuButton {
-            text: "LOAD IMAGE"
-            onClicked: {
-                loadedImage.source = "sourceImage.png"
-                canvas.width = loadedImage.sourceSize.width
-                canvas.height = loadedImage.sourceSize.height
-                canvas.requestLoadImage = true
-                canvas.requestPaint()
+                Logic.switchActiveToolbars(paintTools)
             }
         }
 
         LeftMenuButton {
             text: "COLOR CHANNELS"
             onClicked: {
-                sheActivate(sheRgb)
-                switchActiveToolbars(sheRgbTool)
+                sheBlur.visible = false
+                Logic.sheActivate(sheRgb)
+                Logic.switchActiveToolbars(rgbTool)
+            }
+        }
+
+        LeftMenuButton {
+            text: "WAVE"
+            onClicked: {
+                sheBlur.visible = false
+                Logic.sheActivate(sheWave)
+                Logic.switchActiveToolbars(waveTool)
             }
         }
 
         LeftMenuButton {
             id: lastButton
-            text: "WAVE"
+            text: "BLUR"
             onClicked: {
-                sheActivate(sheWave)
-                switchActiveToolbars(waveTool)
+                sheBlur.visible = true
+                sheRgb.visible = false
+                Logic.sheActivate(sheBlur)
+                Logic.switchActiveToolbars(blurTool)
+            }
+        }
+        PaintTool {
+            id: blurTool
+
+            onVisibleChanged: {
+                Logic.sheApplyToCanvas(sheBlur)
+                Logic.sheZaslonCanvas(sheBlur)
+                root.reqRepaintImage = true;
+            }
+            FancySlider {
+                id: blurSlider
+                width: 155;
+                visible: parent.visible
+                anchors.horizontalCenter: parent.horizontalCenter
+                minimumValue: 0
+                maximumValue: 35
+                value: 0
+                enabled: true
+                onValueChanged: {
+                    sheBlur.radius = blurSlider.value
+                }
             }
         }
 
-        Column {
+        PaintTool  {
+            id: none
+        }
+
+        PaintTool {
             id: paintTools
-            visible: false
+            spacing: 3
             property color paintColor: "blue"
-            clip: false
-            spacing: 5
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 20
+
+            TextTool {
+                text: "pen size"
+            }
+
+            FancySlider {
+                id: sliderCanvasBrush
+                minimumValue: 0.5
+                maximumValue: 30
+                value: 2.5
+                onValueChanged: {
+                    canvas.lineWidth = sliderCanvasBrush.value
+                }
+            }
 
             Repeater {
                 model: ["lightblue", "#33B5E5", "blue",
@@ -105,23 +125,14 @@ Window {
                 }
             }
 
-            FancySlider {
-                id: sliderCanvasBrush
-                minimumValue: 0.5
-                maximumValue: 30
-                value: 2.5
-                onValueChanged: {
-                    canvas.lineWidth = sliderCanvasBrush.value
-                }
-            }
         }
     }
 
-        Column {
+        PaintTool {
             id: waveTool
-            y: lastButton.y + lastButton.height + 20
-            visible: false
-            spacing: 5
+            TextTool {
+                text: "frequency"
+            }
             FancySlider {
                 id: frequency
                 minimumValue: 1
@@ -130,6 +141,9 @@ Window {
                 onValueChanged: {
                     sheWave.frequency = frequency.value
                 }
+            }
+            TextTool {
+                text: "amplitude"
             }
             FancySlider {
                 id: amplitude
@@ -142,50 +156,31 @@ Window {
             }
         }
 
-        Column {
-            id: sheRgbTool
-            y: lastButton.y + lastButton.height + 20
-            visible: false
-            spacing: 5
+        PaintTool {
+            id: rgbTool
             property color paintColor: "red"
             onVisibleChanged: {
-                sheApplyToCanvas(sheRgb)
-                sheZaslonCanvas(sheRgb)
+                Logic.sheApplyToCanvas(sheRgb)
+                Logic.sheZaslonCanvas(sheRgb)
                 root.reqRepaintImage = true;
             }
 
             Repeater {
-                model:  ["red", "green", "blue"]
+                model: ["red", "#04e824", "blue"]
 
-                RgbSlider {
+                FancySlider {
                     id: slider
+                    width: 155;
                     visible: parent.visible
-                    anchors.topMargin: 20
                     anchors.horizontalCenter: parent.horizontalCenter
-                    style: SliderStyle {
-                        handle: Rectangle {
-                            anchors.centerIn: parent
-                            color: control.pressed ? "lightblue" : modelData
-                            border.color: Qt.lighter(modelData, 1.2)
-                            border.width: 2
-                            implicitWidth: 26
-                            implicitHeight: 26
-                            radius: 8
-                        }
-                    }
+                    maineColor: modelData
+                    minimumValue: 0.0
+                    maximumValue: 2.0
+                    value: 1.0
+                    enabled: true
                     onVisibleChanged: {
                         if(visible) {
-                        switch(modelData) {
-                            case "red":
-                                slider.value = 1.0
-                                break;
-                            case "green":
-                                slider.value = 1.0
-                                break;
-                            case "blue":
-                                slider.value = 1.0
-                                break;
-                        }
+                            slider.value = 1.0
                         }
                     }
 
@@ -194,7 +189,7 @@ Window {
                             case "red":
                                 sheRgb.red = slider.value
                                 break;
-                            case "green":
+                            case "#04e824":
                                 sheRgb.green = slider.value
                                 break;
                             case "blue":
@@ -206,48 +201,19 @@ Window {
             }
         }
 
-    function getCanvasDataToSourceImage() {
-        var url = canvas.toDataURL('image/png')
-        sourceImage.source = url
+    Image {
+        id: sourceImage
+        visible: false
+        source: "sourceImage.png"
     }
 
-    function sheZaslonCanvas(she) {
-        she.anchors.fill = canvas
-        she.visible = true
+    Image {
+        id: targetImage
+        visible: false
     }
 
-    function sheActivate(she) {
-        getCanvasDataToSourceImage()
-        for (var i=0; i< 10000000;i++) {
-        }
-        sheZaslonCanvas(she)
-    }
-
-    function sheApplyToCanvas(she) {
-        getCanvasDataToSourceImage()
-        sheToTargetImage(she)
-    }
-
-    function sheToTargetImage(she) {
-        if(she.grabToImage(function(result) {
-            targetImage.source = result.url;
-            },
-            Qt.size(canvas.width, canvas.height))) {
-        } else {
-            console.log("grabDone: " + grabDone)
-        }
-    }
 
     Canvas {
-        function loadImageInCanvas(context) {
-            context.drawImage(loadedImage, 0, 0)
-            context.save()
-        }
-
-        function repaintImageInCanvas(context) {
-            context.drawImage(targetImage, 0, 0)
-            context.save()
-        }
         id: canvas
         property bool paintMode: true
         anchors {
@@ -256,23 +222,26 @@ Window {
             topMargin: 10
             leftMargin: 10
         }
+        width: sourceImage.sourceSize.width
+        height: sourceImage.sourceSize.height
         property real lastX
         property real lastY
         property color color: paintTools.paintColor
-        property bool requestLoadImage: false
         property bool requestRepaintImage: false
         property real lineWidth: 2.5
-
+        property bool firstPaint: true
         onPaint: {
             var ctx = getContext('2d')
-            if(canvas.requestLoadImage) {
-                canvas.loadImageInCanvas(ctx)
-                canvas.requestLoadImage = false
-            } else if(canvas.requestRepaintImage) {
-                canvas.repaintImageInCanvas(ctx)
+            if (firstPaint) {
+                Logic.loadImageInCanvas(ctx)
+                firstPaint = false
+                ctx.requestPaint()
+            }
+            if (canvas.requestRepaintImage) {
+                Logic.repaintImageInCanvas(ctx)
                 canvas.requestRepaintImage = false
             }
-            if(paintMode) {
+            if (paintMode) {
                 ctx.lineWidth = canvas.lineWidth
                 ctx.strokeStyle = canvas.color
                 ctx.beginPath()
@@ -286,44 +255,35 @@ Window {
 
         MouseArea {
             id: area
-            anchors.rightMargin: -8
-            anchors.bottomMargin: -8
-            anchors.leftMargin: 8
-            anchors.topMargin: 8
             anchors.fill: parent
             onPressed: {
                 if(canvas.paintMode) {
-                canvas.lastX = mouseX
-                canvas.lastY = mouseY
+                    canvas.lastX = mouseX
+                    canvas.lastY = mouseY
                 }
             }
             onPositionChanged: {
                 if(root.reqRepaintImage) {
-                                    root.reqRepaintImage = false
-                                    canvas.requestRepaintImage = true
-                                    canvas.requestPaint()
+                    root.reqRepaintImage = false
+                    canvas.requestRepaintImage = true
+                    canvas.requestPaint()
                 }
                 if(canvas.paintMode) {
                     sheRgb.visible = false
+                    sheBlur.visible = false
                     canvas.requestPaint()
                 }
             }
         }
     }
 
-    Image {
-        id: loadedImage
+    FastBlur {
+        id: sheBlur
         visible: false
-    }
+        width: sourceImage.width; height: sourceImage.height
+        source: sourceImage
+        radius: 0
 
-    Image {
-        id: sourceImage
-        visible: false
-    }
-
-    Image {
-        id: targetImage
-        visible: false
     }
 
     ShaderEffect {
@@ -372,7 +332,7 @@ Window {
     }
 
     Component.onCompleted: {
-        switchActiveToolbars(paintTools)
+        Logic.switchActiveToolbars(paintTools)
 //        var keys = Object.keys(root);
 //           for(var i=0; i<keys.length; i++) {
 //             var key = keys[i];
