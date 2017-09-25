@@ -4,7 +4,7 @@
         <file>ColorSquare.qml</file>
         <file>FancySlider.qml</file>
         <file>LeftMenuButton.qml</file>
-        <file>PaintTool.qml</file>
+        <file>Tool.qml</file>
         <file>logic.js</file>
         <file>TextTool.qml</file>
         <file>bck.jpg</file>

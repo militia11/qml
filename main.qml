@@ -65,7 +65,7 @@ Window {
                 Logic.switchActiveToolbars(blurTool)
             }
         }
-        PaintTool {
+        Tool {
             id: blurTool
 
             onVisibleChanged: {
@@ -88,11 +88,11 @@ Window {
             }
         }
 
-        PaintTool  {
+        Tool  {
             id: none
         }
 
-        PaintTool {
+        Tool {
             id: paintTools
             spacing: 3
             property color paintColor: "blue"
@@ -128,7 +128,7 @@ Window {
         }
     }
 
-        PaintTool {
+        Tool {
             id: waveTool
             TextTool {
                 text: "frequency"
@@ -156,7 +156,7 @@ Window {
             }
         }
 
-        PaintTool {
+        Tool {
             id: rgbTool
             property color paintColor: "red"
             onVisibleChanged: {
@@ -235,8 +235,8 @@ Window {
             if (firstPaint) {
                 Logic.loadImageInCanvas(ctx)
                 firstPaint = false
-                ctx.requestPaint()
             }
+
             if (canvas.requestRepaintImage) {
                 Logic.repaintImageInCanvas(ctx)
                 canvas.requestRepaintImage = false
