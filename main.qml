@@ -69,9 +69,13 @@ Window {
             id: blurTool
 
             onVisibleChanged: {
-                Logic.sheApplyToCanvas(sheBlur)
-                Logic.sheZaslonCanvas(sheBlur)
-                root.reqRepaintImage = true;
+                if(!visible) {
+                    console.log("not visible")
+                    Logic.sheApplyToCanvas(sheBlur)
+                    Logic.sheZaslonCanvas(sheBlur)
+                    root.reqRepaintImage = true;
+                    canvas.requestPaint()
+                }
             }
             FancySlider {
                 id: blurSlider
@@ -160,9 +164,12 @@ Window {
             id: rgbTool
             property color paintColor: "red"
             onVisibleChanged: {
+                if(!visible) {
                 Logic.sheApplyToCanvas(sheRgb)
                 Logic.sheZaslonCanvas(sheRgb)
                 root.reqRepaintImage = true;
+                canvas.requestPaint()
+                }
             }
 
             Repeater {
@@ -263,12 +270,14 @@ Window {
                 }
             }
             onPositionChanged: {
+
                 if(root.reqRepaintImage) {
                     root.reqRepaintImage = false
                     canvas.requestRepaintImage = true
                     canvas.requestPaint()
                 }
                 if(canvas.paintMode) {
+                    blurSlider.value = 0
                     sheRgb.visible = false
                     sheBlur.visible = false
                     canvas.requestPaint()
@@ -283,7 +292,6 @@ Window {
         width: sourceImage.width; height: sourceImage.height
         source: sourceImage
         radius: 0
-
     }
 
     ShaderEffect {
@@ -294,7 +302,6 @@ Window {
         property real red: 1.0
         property real green: 1.0
         property real blue: 1.0
-        property string activeChannel: "red"
         fragmentShader: "
             varying highp vec2 qt_TexCoord0;
             uniform sampler2D source;
@@ -333,6 +340,8 @@ Window {
 
     Component.onCompleted: {
         Logic.switchActiveToolbars(paintTools)
+        sheRgb.visible = false
+        sheBlur.visible = false
 //        var keys = Object.keys(root);
 //           for(var i=0; i<keys.length; i++) {
 //             var key = keys[i];

@@ -17,6 +17,8 @@ function sheActivate(she) {
 
 function sheApplyToCanvas(she) {
     getCanvasDataToSourceImage()
+    for (var i=0; i< 10000000;i++) {
+    }
     sheToTargetImage(she)
 }
 
@@ -46,13 +48,15 @@ function switchActiveToolbars(row) {
             sheWave.visible = false
             waveTool.visible = false
             paintTools.visible = false;
-            canvas.paintMode = false
+             canvas.paintMode = false
+            sheBlur.visible = false
             sheRgb.red = 1.0
             sheRgb.green = 1.0
             sheRgb.blue = 1.0
             break;
         case waveTool:
             waveTool.visible = true;
+            sheRgb.visible = false
             blurTool.visible = false
             canvas.paintMode = false
             paintTools.visible = false;
