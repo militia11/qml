@@ -70,9 +70,8 @@ Window {
 
             onVisibleChanged: {
                 if(!visible) {
-                    console.log("not visible")
                     Logic.sheApplyToCanvas(sheBlur)
-                    Logic.sheZaslonCanvas(sheBlur)
+                    sheBlur.visible = false
                     root.reqRepaintImage = true;
                     canvas.requestPaint()
                 }
@@ -166,7 +165,7 @@ Window {
             onVisibleChanged: {
                 if(!visible) {
                 Logic.sheApplyToCanvas(sheRgb)
-                Logic.sheZaslonCanvas(sheRgb)
+                sheRgb.visible = false
                 root.reqRepaintImage = true;
                 canvas.requestPaint()
                 }
@@ -278,8 +277,6 @@ Window {
                 }
                 if(canvas.paintMode) {
                     blurSlider.value = 0
-                    sheRgb.visible = false
-                    sheBlur.visible = false
                     canvas.requestPaint()
                 }
             }
