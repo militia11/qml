@@ -3,11 +3,25 @@
         <file>main.qml</file>
         <file>ColorSquare.qml</file>
         <file>FancySlider.qml</file>
-        <file>LeftMenuButton.qml</file>
         <file>Tool.qml</file>
-        <file>logic.js</file>
         <file>TextTool.qml</file>
-        <file>bck.jpg</file>
         <file>sourceImage.png</file>
+        <file>Tools.qml</file>
+        <file>Effects.qml</file>
+        <file>Background.qml</file>
+        <file>Effect.qml</file>
+        <file>MainButtons.qml</file>
+        <file>MainButton.qml</file>
+        <file>ImageDialog.qml</file>
+        <file>ToolButton.qml</file>
+        <file>ColorSelectDialog.qml</file>
+        <file>ColorButton.qml</file>
+        <file>FancyCanvas.qml</file>
+        <file>ToolDraw.qml</file>
+        <file>ToolShapes.qml</file>
+        <file>ToolRgb.qml</file>
+        <file>ToolBlur.qml</file>
+        <file>ToolWave.qml</file>
+        <file>ToolBrightness.qml</file>
     </qresource>
 </RCC>
