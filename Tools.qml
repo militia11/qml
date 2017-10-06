@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import ShapesTypes 1.0
+import CanvasModes 1.0
 
 Item {
     id: root
@@ -15,15 +16,15 @@ Item {
 
     TextArea {
         id: textTip
-        parent: tools
+        anchors.horizontalCenter: parent.horizontalCenter
+        focus: false
         anchors.fill: parent
-        anchors.margins: 2
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         backgroundVisible: false
         font.bold : true
         font.family: "Helvetica"
-        font.pointSize: 15.5
+        font.pointSize: 12.5
         style: TextAreaStyle {
                   textColor: "#558C89"
                   renderType: Text.NativeRendering
@@ -50,20 +51,44 @@ Item {
 
         Repeater {
             model: ["lightblue", "#33B5E5", "blue",
-                "lightgreen", "#99CC00", "green","yellow",
-                "gold", "#FFBB33","#FF4444" , "red", "black"]
+                "lightgreen", "#99CC00", "green", "gold",
+                "#FFBB33","#FF4444" , "red", "black"]
             ColorSquare {
                 color: modelData
                 active: root.colorStroke === color
                 onClicked: {
                     root.colorStroke = color
+                    eraserButton.checked = false
+                }
+            }
+        }
+
+        Button {
+            id: eraserButton
+            iconSource: "qrc:///images/eraser.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 75; height: 55
+            checkable: true
+            style: ButtonStyle {
+               background: Rectangle {
+                   id: recInButtonStyle
+                   color: control.checked ? "white" : "transparent"
+                   border.width: control.hovered || control.checked ? 3 : 0
+                   border.color: control.hovered || control.checked ?  Qt.lighter("#74AFAD", 1.13) : "#888"
+                   radius: 5
+               }
+            }
+            onClicked: {
+                if (eraserButton.checked) {
+                    root.colorStroke = "transparent"
                 }
             }
         }
     }
-
+    // TEXT TOOL onVisibleChanged: {}
     Tool {
         id: shapesTool
+
         spacing: 5
         onVisibleChanged: {}
 
@@ -116,6 +141,9 @@ Item {
             }
         }
 
+        TextTool {
+            text: "composition"
+        }
         ComboBox {
             id: comboComposite
             width: 200
@@ -436,19 +464,21 @@ Item {
     }
 
     function switchActiveToolbars(action) {
-        canvas.paintMode = false
-        canvas.shapesMode = false
+        canvas.mode = CanvasModes.NONE
         switch(action) {
             case "PAINT":
                 currentTool = paintTool
-                canvas.paintMode = true
+                canvas.mode = CanvasModes.DRAWING
                 break;
             case "SHAPES":
                 currentTool = shapesTool
-                canvas.shapesMode = true
+                canvas.mode = CanvasModes.ADDSHAPES
                 break;
             case "COLORS":
                 currentTool = rgbTool
+                break;
+            case "TEXT":
+                //  currentTool = toolText
                 break;
             case "BLUR":
                 currentTool = blurTool
@@ -505,10 +535,13 @@ Item {
                 tip = "Paint on canvas"
                 break;
             case "SHAPES":
-                tip = "Shapes"
+                tip = "Draw fancy shapes"
+                break;
+            case "TEXT":
+                tip = "Set text to canvas"
                 break;
             case "COLORS":
-               tip = "Define RGB pallete"
+                tip = "Define RGB pallete"
                 break;
             case "BLUR":
                 tip = "High quality blur"

@@ -13,5 +13,4 @@ class Shapes : public QObject {
 		Q_ENUMS(Shape)
 };
 
-
 #endif // SHAPES_H

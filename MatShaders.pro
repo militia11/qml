@@ -15,5 +15,6 @@ include(deployment.pri)
 DISTFILES +=
 
 HEADERS += \
-    Shapes.h
+    Shapes.h \
+    CanvasModes.h
 

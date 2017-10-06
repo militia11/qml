@@ -1,17 +1,16 @@
 import QtQuick 2.0
 import ShapesTypes 1.0
+import CanvasModes 1.0
 
 Canvas {
-    width: 1000; height: 750
-    anchors {
-        top: parent.top
-        topMargin: 20
-        bottom: parent.bottom
-        bottomMargin: 20
-    }
+    id: root
+    width: parent.width - 20; height: parent.height - 20
+    anchors.left: parent.left
+    anchors.top: parent.top
+    anchors.leftMargin: 10
+    anchors.topMargin: 10
 
-    property bool paintMode: false
-    property bool shapesMode: false
+    property int mode: CanvasModes.NONE
     property bool copyFirst: false
     property bool putLast: false
     property real lastX
@@ -41,9 +40,9 @@ Canvas {
             canvas.repaintImageInCanvas(ctx)
         }
 
-        if (paintMode) {
+        if (mode == CanvasModes.DRAWING) {
             canvas.drawing(ctx)
-        } else if (shapesMode) {
+        } else if (mode == CanvasModes.ADDSHAPES) {
             drawShape(ctx)
         }
     }
@@ -53,10 +52,10 @@ Canvas {
         anchors.fill: parent
 
         onPressed: {
-            if(canvas.paintMode || canvas.shapesMode) {
+            if(mode != CanvasModes.NONE) {
                 canvas.lastX = mouseX
                 canvas.lastY = mouseY
-                if(canvas.shapesMode) {
+                if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
                     canvas.copyFirst = true
                     canvas.requestPaint()
                     tempImage.update()
@@ -66,7 +65,7 @@ Canvas {
         }
 
         onReleased: {
-            if(canvas.shapesMode) {
+            if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
                 canvas.shapeHeight = 0
                 canvas.shapeWidth = 0
                 canvas.putLast = true
@@ -76,8 +75,8 @@ Canvas {
         }
 
         onPositionChanged: {
-            if(canvas.paintMode || canvas.shapesMode) {
-                if(canvas.shapesMode) {
+            if(mode != CanvasModes.NONE) {
+                if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
                      canvas.shapeWidth = mouseX - canvas.lastX
                      canvas.shapeHeight = mouseY - canvas.lastY
                 }
@@ -126,8 +125,7 @@ Canvas {
     function canvasDataToSourceImage() {
         var url = canvas.toDataURL('image/png')
         sourceImage.source = url
-        //delayTimer.start()//
-        console.log(url)
+        //console.log(url)
     }
 
     function loadImageInCanvas(context) {
@@ -137,7 +135,7 @@ Canvas {
     }
 
     function repaintImageInCanvas(context) {
-        context.drawImage(sourceImage, 0, 0)
+        context.drawImage(tImage, 0, 0)
         context.save()
         canvas.repaintImage = false
     }

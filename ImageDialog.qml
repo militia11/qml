@@ -9,11 +9,11 @@ FileDialog {
     visible: false
 
     onAccepted: {
-        pathViewButtons.activateEffectsButton()
         sourceImage.source = imageDialog.fileUrl
         sourceImage.update()
         canvas.loadImage = true
         canvas.requestPaint()
+        pathViewButtons.activateEffectsButton()
         close()
     }
 

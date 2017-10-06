@@ -8,18 +8,22 @@ Window {
     id: root
     visible: true
     minimumWidth: 950 ; minimumHeight: 700
-    width: 200 + 180 + 1000 + 80
+    width: 200 + 180 + 1000 + 70
 
     Background {
         id: bck
-        width: root.width
-        height: root.height
     }
 
     Image {
         id: sourceImage
         visible: false
-        source: "sourceImage.png"
+        source: "qrc:///images/sourceImage.png"
+    }
+
+    Image {
+        id: tImage
+        visible: false
+        source: "qrc:///images/sourceImage.png"
     }
 
     Row {
@@ -127,6 +131,7 @@ Window {
             ListElement { name: "EFFECTS" }
             ListElement { name: "PAINT" }
             ListElement { name: "SHAPES" }
+            ListElement { name: "TEXT" }
             ListElement { name: "COLORS" }
             ListElement { name: "EDGE" }
             ListElement { name: "BLUR" }
@@ -184,9 +189,24 @@ Window {
             visible: false
         }
 
-
-        FancyCanvas {
-            id: canvas
+        Item {
+            width: 1000; height: 750
+            Rectangle {
+                width: parent.width; height: parent.height
+                anchors.fill: parent
+                border.color:  "#74AFAD"//Qt.lighter("#558C89", 1.14) //
+                border.width: 10
+                color: "white"
+            }
+            anchors {
+                top: parent.top
+                topMargin: 20
+                bottom: parent.bottom
+                bottomMargin: 20
+            }
+            FancyCanvas {
+                id: canvas
+            }
         }
 
         Effects {
@@ -205,7 +225,7 @@ Window {
     }
 
     Timer {
-        id: timer
+        id: timerPaintAfterEffectToImage
         interval: 40
         repeat: false
         running: false
@@ -213,16 +233,6 @@ Window {
            canvas.requestPaint()
         }
     }
-
-//    Timer {
-//        id: delayTimer
-//        interval: 100
-//        repeat: false
-//        running: false
-//        onTriggered: {
-//           // do nothing
-//        }
-//    }
 
     Timer {
         id: timerScrollPathView
@@ -236,9 +246,8 @@ Window {
 
     Component.onCompleted: {
         canvas.loadImage = true
-        //canvas.requestPaint()
         effects.visibleEffect()
-//         pathViewButtons.positionViewAtIndex(2, PathView.Center)
+//        pathViewButtons.positionViewAtIndex(2, PathView.Center)
 //        tools.switchActiveToolbars("SHAPES")
 //       tools.visible = true
 //           var keys = Object.keys(root);

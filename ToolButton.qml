@@ -4,7 +4,6 @@ import QtQuick.Controls.Styles 1.4
 
 Button {
     width: 120; height: 100
-    anchors.horizontalCenter: parent.horizontalCenter
 
     style: ButtonStyle {
          background:

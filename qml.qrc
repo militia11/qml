@@ -5,7 +5,6 @@
         <file>FancySlider.qml</file>
         <file>Tool.qml</file>
         <file>TextTool.qml</file>
-        <file>sourceImage.png</file>
         <file>Tools.qml</file>
         <file>Effects.qml</file>
         <file>Background.qml</file>
@@ -23,5 +22,7 @@
         <file>ToolBlur.qml</file>
         <file>ToolWave.qml</file>
         <file>ToolBrightness.qml</file>
+        <file>images/eraser.png</file>
+        <file>images/sourceImage.png</file>
     </qresource>
 </RCC>

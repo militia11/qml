@@ -14,9 +14,7 @@ Item {
             right: parent.left
             rightMargin: 5
         }
-
-        visible: true
-        radius: 8
+        radius: 10
 
         MouseArea {
             anchors.fill: parent

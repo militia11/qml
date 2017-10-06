@@ -181,7 +181,6 @@ Item {
             }"
     }
 
-
     function onCanvas() {
         canvas.anchors.fill = currentEffect
         currentEffect.visible = true
@@ -196,7 +195,7 @@ Item {
 
     function toImage() {
         currentEffect.grabToImage(function(result) {
-            sourceImage.source = result.url;
+            tImage.source = result.url;
             },
             Qt.size(canvas.width, canvas.height))
     }
@@ -213,6 +212,7 @@ Item {
             case "EFFECTS":
             case "PAINT":
             case "SHAPES":
+            case "TEXT":
                 currentEffect = eNone
                 break;
             case "COLORS":
