@@ -20,7 +20,6 @@ Canvas {
     property bool loadImage: false
     property real strokeSize: tools.strokeSize
     property bool fillWhite: true
-    property var mouseCoords: [0, 0, 300, 400]
 
     Image {
         id: tempImage

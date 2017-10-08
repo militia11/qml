@@ -3,11 +3,11 @@ import QtGraphicalEffects 1.0
 
 Item {
     property Item currentEffect: eNone
+
     Item {
         id: eNone
     }
-//    anchors.top: parent.top
-//    anchors.left: parent.left
+
     EffectGenie {
         id: eGenie
     }
@@ -188,7 +188,10 @@ Item {
     }
 
     function onCanvas() {
-        canvas.anchors.fill = currentEffect
+        currentEffect.x = canvas.x
+        currentEffect.y = canvas.y
+        currentEffect.width = canvas.width
+        currentEffect.height = canvas.height
         currentEffect.visible = true
     }
 

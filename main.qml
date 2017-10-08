@@ -103,11 +103,10 @@ Window {
                 anchors.topMargin: 10
                 anchors.fill: parent
             }
-        }
 
-        Effects {
-            id: effects
-            parent: canvas
+            Effects {
+                id: effects
+            }
         }
 
         MainButtons {
