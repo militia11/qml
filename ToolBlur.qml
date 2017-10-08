@@ -7,6 +7,7 @@ Tool {
     onVisibleChanged: {
         if(visible) {
             blurSlider.value = 0
+            resetBlur.opacity = 0
         }
     }
 
@@ -18,6 +19,13 @@ Tool {
         enabled: true
         onValueChanged: {
             effects.currentEffect.radius = blurSlider.value
+            if(resetBlur.opacity == 0)
+                resetBlur.opacity = 1
         }
+    }
+
+    ResetButton {
+        id: resetBlur
+        onReset: blurSlider.value = 0
     }
 }

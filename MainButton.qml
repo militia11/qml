@@ -4,14 +4,13 @@ import QtQuick.Controls.Styles 1.4
 
 Button {
     anchors.horizontalCenter: parent.horizontalCenter
-    width: 135; height: 135
-    checkable: true
+    width: 145; height: 145
     style: ButtonStyle {
        background: Rectangle {
            id: recInButtonStyle
-           color: control.hovered ? "#558C89" : "transparent"
-           border.width: control.hovered ? 4 : 0
-           border.color: control.hovered ?  Qt.lighter("#74AFAD", 1.13) : "#888"
+           color: control.hovered || control.checked ? "#558C89" : "transparent"
+           border.width: control.hovered || control.checked? 5 : 0
+           border.color: control.hovered || control.checked? Qt.lighter("#74AFAD", 1.3) : "#888"
            radius: 16
        }
     }

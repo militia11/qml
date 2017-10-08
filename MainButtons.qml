@@ -2,20 +2,26 @@ import QtQuick 2.3
 
 Item {
     id: root
-    width: 210; height: parent.height
+    width: 190; height: parent.height
     state: "expanded"
 
     Rectangle {
         id: showMenuButton
-        width: 60;  height: 60
+        x: -27
+        width: 47;  height: 50
         anchors {
             top: parent.top
-            topMargin: 5
+            topMargin: 0
             right: parent.left
-            rightMargin: 5
+            rightMargin: -20
         }
         radius: 10
-
+        opacity: 0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 1000
+            }
+        }
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
@@ -28,13 +34,15 @@ Item {
 
     Column {
         id: container
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 200
-        spacing: 80
+        x: 0
+        width: 190
+        height: 412
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: 50
 
         MainButton {
             id: load
+            width: 145
             iconSource: "qrc:///images/load.png"
             onClicked: {
                 imageDialog.open()
@@ -46,6 +54,16 @@ Item {
             iconSource: "qrc:///images/save.png"
             onClicked:
                 effects.switchActiveEffect("GENIE")
+        }
+
+        MainButton {
+            id: camera
+            checkable: true
+            iconSource: "qrc:///images/camera.png"
+            onClicked: {
+                camera.checked = true
+                loaderCamera.source = "FancyCamera.qml"
+            }
         }
     }
 
@@ -62,6 +80,11 @@ Item {
             }
 
             PropertyChanges {
+                target: camera
+                opacity: 0
+            }
+
+            PropertyChanges {
                 target: showMenuButton
                 opacity: 1
             }
@@ -73,8 +96,14 @@ Item {
                 target: load
                 opacity: 1
             }
+
             PropertyChanges {
                 target: save
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: camera
                 opacity: 1
             }
 

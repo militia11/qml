@@ -18,7 +18,7 @@ Component {
        style: ButtonStyle {
            background: Rectangle {
                id: recInButtonStyle
-               border.width:wrapper.PathView.isCurrentItem || control.hovered ? 4 : 1
+               border.width: wrapper.PathView.isCurrentItem || control.hovered ? 4 : 1
                border.color: wrapper.PathView.isCurrentItem || control.hovered ? "#558C89" : "#888"
                radius: 4
                gradient: Gradient {

@@ -8,6 +8,7 @@ Canvas {
     property int mode: CanvasModes.NONE
     property bool copyFirst: false
     property bool putLast: false
+    property bool resized: false
     property real lastX
     property real lastY
     property color colorStroke: tools.colorStroke
@@ -26,31 +27,35 @@ Canvas {
         visible: false
         opacity: 0.7
     }
+
     onPaint: {
         var ctx = getContext('2d')
-        if (canvas.loadImage) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            canvas.loadImageInCanvas(ctx)
+        if (loadImage) {
+            ctx.clearRect(0, 0, width, height)
+            loadImageInCanvas(ctx)
+            return
         }
 
-        if (canvas.repaintImage) {
-            canvas.repaintImageInCanvas(ctx)
+        if (repaintImage) {
+            repaintImageInCanvas(ctx)
+            return
         }
 
-        if(canvas.fillWhite) {
+        if(fillWhite) {
             ctx.fillStyle = "white"
-            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            ctx.fillRect(0, 0, width, height)
             fillWhite = false
+            return
         }
 
         if (mode == CanvasModes.DRAWING) {
-            ctx.strokeStyle = canvas.colorStroke
-            canvas.drawing(ctx)
+            ctx.strokeStyle = colorStroke
+            drawing(ctx)
         } else if (mode == CanvasModes.ADDSHAPES) {
             drawShape(ctx)
         } else if(mode == CanvasModes.RUBBER) {
             ctx.strokeStyle = canvasBackground.color
-            canvas.drawing(ctx)
+            drawing(ctx)
         }
     }
 
@@ -60,11 +65,11 @@ Canvas {
 
         onPressed: {
             if(mode != CanvasModes.NONE) {
-                canvas.lastX = mouseX
-                canvas.lastY = mouseY
+                lastX = mouseX
+                lastY = mouseY
                 if(mode == CanvasModes.ADDSHAPES) {
-                    canvas.copyFirst = true
-                    canvas.requestPaint()
+                    copyFirst = true
+                    requestPaint()
                     tempImage.update()
                     tempImage.visible = true
                 }
@@ -75,10 +80,10 @@ Canvas {
             if (mode != CanvasModes.NONE) {
                 if(mode == CanvasModes.ADDSHAPES) {
                     particlesEmmiterShapes.burst(110)
-                    canvas.shapeHeight = 0
-                    canvas.shapeWidth = 0
-                    canvas.putLast = true
-                    canvas.requestPaint()
+                    shapeHeight = 0
+                    shapeWidth = 0
+                    putLast = true
+                    requestPaint()
                     tempImage.visible = false
                 }
             }
@@ -87,10 +92,10 @@ Canvas {
         onPositionChanged: {
             if(mode != CanvasModes.NONE) {
                 if(mode == CanvasModes.ADDSHAPES) {
-                     canvas.shapeWidth = mouseX - canvas.lastX
-                     canvas.shapeHeight = mouseY - canvas.lastY
+                     shapeWidth = mouseX - lastX
+                     shapeHeight = mouseY - lastY
                 }
-                canvas.requestPaint()
+                requestPaint()
             }
         }
     }
@@ -115,25 +120,25 @@ Canvas {
     }
 
     function drawShape(ctx) {
-        ctx.fillStyle = canvas.colorFill
+        ctx.fillStyle = colorFill
         ctx.strokeStyle = colorStroke
-        if(canvas.copyFirst) {
-            var url = canvas.toDataURL('image/png')
+        if(copyFirst) {
+            var url = toDataURL('image/png')
             tempImage.source = url
-            canvas.copyFirst = false
-        } else if(canvas.putLast) {
+            copyFirst = false
+        } else if(putLast) {
             ctx.globalCompositeOperation = tools.currentComposite
             ctx.drawImage(tempImage, 0, 0)
-            canvas.putLast = false
+            putLast = false
         } else {
             ctx.beginPath()
-            ctx.lineWidth = canvas.strokeSize
+            ctx.lineWidth = strokeSize
             ctx.moveTo(lastX, lastY)
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            if (canvas.shapeType === Shapes.RECTANGLE)
-                ctx.rect(canvas.lastX, canvas.lastY, canvas.shapeWidth, canvas.shapeHeight)
-            else if (canvas.shapeType === Shapes.ELISPE)
-                ctx.ellipse(canvas.lastX, canvas.lastY, canvas.shapeWidth, canvas.shapeHeight)
+            ctx.clearRect(0, 0, width, height)
+            if (shapeType === Shapes.RECTANGLE)
+                ctx.rect(lastX, lastY, shapeWidth, shapeHeight)
+            else if (shapeType === Shapes.ELISPE)
+                ctx.ellipse(lastX, lastY, shapeWidth, shapeHeight)
             ctx.closePath()
             ctx.fill()
             ctx.stroke()
@@ -141,17 +146,20 @@ Canvas {
     }
 
     function drawing(ctx) {
-        ctx.lineWidth = canvas.lineWidth
+        ctx.lineWidth = lineWidth
         ctx.beginPath()
         ctx.moveTo(lastX, lastY)
         lastX = area.mouseX
         lastY = area.mouseY
         ctx.lineTo(lastX, lastY)
         ctx.stroke()
+        console.log("sourceImage"+ sourceImage.width)
+        console.log("res"+ canvas.width)
     }
 
     function canvasDataToSourceImage() {
-        var url = canvas.toDataURL('image/png')
+        console.log("canvas::canvasDataToSourceImage")
+        var url = toDataURL('image/png')
         sourceImage.source = url
         //console.log(url)
     }
@@ -159,25 +167,30 @@ Canvas {
     function loadImageInCanvas(ctx) {
         var startX = 0
         var startY = 0
-        if(sourceImage.width < canvas.width) {
-            var spaceWidth = canvas.width - sourceImage.width
+        if(sourceImage.width < width) {
+            var spaceWidth = width - sourceImage.width
             startX = spaceWidth / 2
+            resized = true
         }
-        if(sourceImage.height < canvas.height) {
-            var spaceHeight = canvas.height - sourceImage.height
+        if(sourceImage.height < height) {
+            var spaceHeight = height - sourceImage.height
             startY = spaceHeight / 2
+            resized = true
         }
-        ctx.drawImage(sourceImage, startX, startY)
-        canvas.loadImage = false
-        canvas.height = sourceImage.height
-        canvas.width = sourceImage.width
-        console.log(canvas.x)
-        console.log(canvas.y)
+        if (resized) {
+            canvas.height = sourceImage.height
+            canvas.width = sourceImage.width
+            resized = false
+            timers.requestPaintAfterDelay()
+        } else {
+            ctx.drawImage(sourceImage, startX, startY)
+            loadImage = false
+        }
     }
 
     function repaintImageInCanvas(context) {
         context.drawImage(tImage, 0, 0)
         context.save()
-        canvas.repaintImage = false
+        repaintImage = false
     }
 }

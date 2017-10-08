@@ -6,6 +6,7 @@ Tool {
             hSlider.value = 0
             sSlider.value = 0
             lSlider.value = 0
+            resetHsl.opacity = 0
         }
     }
 
@@ -20,6 +21,8 @@ Tool {
         enabled: true
         onValueChanged: {
             effects.currentEffect.hue = hSlider.value
+            if(resetHsl.opacity==0)
+                resetHsl.opacity = 1
         }
     }
 
@@ -34,6 +37,8 @@ Tool {
         enabled: true
         onValueChanged: {
             effects.currentEffect.saturation = sSlider.value
+            if(resetHsl.opacity==0)
+                resetHsl.opacity = 1
         }
     }
 
@@ -48,6 +53,17 @@ Tool {
         enabled: true
         onValueChanged: {
             effects.currentEffect.lightness = lSlider.value
+            if(resetHsl.opacity==0)
+                resetHsl.opacity = 1
+        }
+    }
+
+    ResetButton {
+        id: resetHsl
+        onReset: {
+            hSlider.value = 0
+            sSlider.value = 0
+            lSlider.value = 0
         }
     }
 }

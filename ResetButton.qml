@@ -19,6 +19,7 @@ Button {
             anchors.fill: recInButtonStyle
             source: "qrc:///images/reset.png"
         }
+
     onClicked: {
         opacityAnimation.running = true
         control.reset()

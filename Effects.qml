@@ -209,7 +209,7 @@ Item {
                 },
                 Qt.size(canvas.width, canvas.height))
             canvas.repaintImage = true;
-           timers.paintAfterGrabEffect()
+           timers.requestPaintAfterDelay()
         }
     }
 

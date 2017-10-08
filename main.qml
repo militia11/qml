@@ -8,8 +8,9 @@ import QtQuick.Window 2.2
 //Qt.lighter("#558C89", 1.2) D9853B
 Window {
     id: root
-    width: 1600
+    width: 1580
     height: 800
+    property alias canvas: canvas
     property alias item1: item1
     visible: true
     minimumHeight: 800
@@ -82,26 +83,29 @@ Window {
             id: item1
             width: 1150
             anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.topMargin: 20
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
+            anchors.bottomMargin: 20
 
             Rectangle {
                 id: canvasBackground
                 property color colour: "transparent"
                 border.width: 10
-                border.color:  Qt.lighter("#74AFAD", 1.13)
+                border.color: Qt.lighter("#74AFAD", 1.13)
                 color: colour
                 anchors.fill: parent
             }
 
             FancyCanvas {
                 id: canvas
-                anchors.rightMargin: 10
-                anchors.leftMargin: 10
-                anchors.bottomMargin: 10
-                anchors.topMargin: 10
-                anchors.fill: parent
+                width: parent.width - 20; height: parent.height- 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+
+                Loader {
+                    id: loaderCamera
+                    anchors.fill: parent
+                }
             }
 
             Effects {

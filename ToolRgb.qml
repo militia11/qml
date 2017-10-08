@@ -3,6 +3,7 @@ import QtQuick 2.0
 Tool {
     property color paintColor: "red"
     Repeater {
+        id: repeaterColors
         model: ["red", "#04e824", "blue"]
 
         FancySlider {
@@ -16,10 +17,13 @@ Tool {
             onVisibleChanged: {
                 if (visible) {
                     slider.value = 1.0
+                    resetRgb.opacity = 0
                 }
             }
 
             onValueChanged: {
+                if(resetRgb.opacity==0)
+                    resetRgb.opacity = 1
                 switch(modelData) {
                     case "red":
                         effects.currentEffect.red = slider.value
@@ -32,6 +36,15 @@ Tool {
                         break;
                 }
             }
+        }
+    }
+
+    ResetButton {
+        id: resetRgb
+        onReset: {
+            repeaterColors.itemAt(0).value = 1.0
+            repeaterColors.itemAt(1).value = 1.0
+            repeaterColors.itemAt(2).value = 1.0
         }
     }
 }
