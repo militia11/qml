@@ -1,13 +1,15 @@
 import QtQuick 2.3
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQml.Models 2.2
 
 Item {
     property Item currentEffect: eNone
     Item {
         id: eNone
+    }
+//    anchors.top: parent.top
+//    anchors.left: parent.left
+    EffectGenie {
+        id: eGenie
     }
 
     Effect {
@@ -156,6 +158,10 @@ Item {
         saturation: 1
     }
 
+    EffectCurtain {
+        id: eCurtain
+    }
+
     ShaderEffect {
         id: eWave
         width: sourceImage.width; height: sourceImage.height
@@ -194,10 +200,14 @@ Item {
     }
 
     function toImage() {
-        currentEffect.grabToImage(function(result) {
-            tImage.source = result.url;
-            },
-            Qt.size(canvas.width, canvas.height))
+        if(currentEffect != eNone) {
+            currentEffect.grabToImage(function(result) {
+                tImage.source = result.url;
+                },
+                Qt.size(canvas.width, canvas.height))
+            canvas.repaintImage = true;
+           timers.paintAfterGrabEffect()
+        }
     }
 
     function visibleEffect() {
@@ -209,17 +219,17 @@ Item {
 
     function switchActiveEffect(effect) {
         switch(effect) {
-            case "EFFECTS":
-            case "PAINT":
-            case "SHAPES":
-            case "TEXT":
-                currentEffect = eNone
-                break;
+            case "GENIE":
+                currentEffect = eGenie
+                break
+            case "CURTAIN":
+                currentEffect = eCurtain
+                visibleEffect()
+                onCanvas()
+                return
+                //break
             case "COLORS":
                 currentEffect = eRgb;
-                currentEffect.red = 1.0
-                currentEffect.green = 1.0
-                currentEffect.blue = 1.0
                 break;
             case "BLUR":
                 currentEffect = eBlur

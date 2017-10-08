@@ -2,15 +2,14 @@ import QtQuick 2.0
 
 Tool {
     property color paintColor: "red"
-
     Repeater {
         model: ["red", "#04e824", "blue"]
 
         FancySlider {
             id: slider
             maineColor: modelData
-            minimumValue: 0.0
-            maximumValue: 2.0
+            from: 0.0
+            to: 2.0
             value: 1.0
             enabled: true
 

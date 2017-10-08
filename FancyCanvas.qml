@@ -1,15 +1,10 @@
 import QtQuick 2.0
-import ShapesTypes 1.0
+import QtQuick.Particles 2.0
+
 import CanvasModes 1.0
+import ShapesTypes 1.0
 
 Canvas {
-    id: root
-    width: parent.width - 20; height: parent.height - 20
-    anchors.left: parent.left
-    anchors.top: parent.top
-    anchors.leftMargin: 10
-    anchors.topMargin: 10
-
     property int mode: CanvasModes.NONE
     property bool copyFirst: false
     property bool putLast: false
@@ -17,13 +12,15 @@ Canvas {
     property real lastY
     property color colorStroke: tools.colorStroke
     property color colorFill: tools.colorFill
-    property real lineWidth: 2.5
+    property real lineWidth: tools.lineWidth
     property real shapeWidth: 0
     property real shapeHeight: 0
     property int shapeType: tools.currentShape
     property bool repaintImage: false
     property bool loadImage: false
     property real strokeSize: tools.strokeSize
+    property bool fillWhite: true
+    property var mouseCoords: [0, 0, 300, 400]
 
     Image {
         id: tempImage
@@ -33,6 +30,7 @@ Canvas {
     onPaint: {
         var ctx = getContext('2d')
         if (canvas.loadImage) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
             canvas.loadImageInCanvas(ctx)
         }
 
@@ -40,10 +38,20 @@ Canvas {
             canvas.repaintImageInCanvas(ctx)
         }
 
+        if(canvas.fillWhite) {
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            fillWhite = false
+        }
+
         if (mode == CanvasModes.DRAWING) {
+            ctx.strokeStyle = canvas.colorStroke
             canvas.drawing(ctx)
         } else if (mode == CanvasModes.ADDSHAPES) {
             drawShape(ctx)
+        } else if(mode == CanvasModes.RUBBER) {
+            ctx.strokeStyle = canvasBackground.color
+            canvas.drawing(ctx)
         }
     }
 
@@ -55,7 +63,7 @@ Canvas {
             if(mode != CanvasModes.NONE) {
                 canvas.lastX = mouseX
                 canvas.lastY = mouseY
-                if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
+                if(mode == CanvasModes.ADDSHAPES) {
                     canvas.copyFirst = true
                     canvas.requestPaint()
                     tempImage.update()
@@ -65,24 +73,46 @@ Canvas {
         }
 
         onReleased: {
-            if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
-                canvas.shapeHeight = 0
-                canvas.shapeWidth = 0
-                canvas.putLast = true
-                canvas.requestPaint()
-                tempImage.visible = false
+            if (mode != CanvasModes.NONE) {
+                if(mode == CanvasModes.ADDSHAPES) {
+                    particlesEmmiterShapes.burst(110)
+                    canvas.shapeHeight = 0
+                    canvas.shapeWidth = 0
+                    canvas.putLast = true
+                    canvas.requestPaint()
+                    tempImage.visible = false
+                }
             }
         }
 
         onPositionChanged: {
             if(mode != CanvasModes.NONE) {
-                if(mode == CanvasModes.ADDSHAPES || mode == CanvasModes.RUBBER) {
+                if(mode == CanvasModes.ADDSHAPES) {
                      canvas.shapeWidth = mouseX - canvas.lastX
                      canvas.shapeHeight = mouseY - canvas.lastY
                 }
                 canvas.requestPaint()
             }
         }
+    }
+
+    ParticleSystem {
+        x: area.mouseX
+        y: area.mouseY
+        ImageParticle {
+            source: "qrc:///images/star.png"
+            color: tools.colorFill
+            rotationVelocityVariation: 360
+        }
+
+        Emitter {
+            id: particlesEmmiterShapes
+            anchors.centerIn: parent
+            emitRate: 0
+            lifeSpan: 790
+            velocity: AngleDirection {angleVariation: 360; magnitude: 199; magnitudeVariation: 130}
+            size: 21
+        }        
     }
 
     function drawShape(ctx) {
@@ -113,7 +143,6 @@ Canvas {
 
     function drawing(ctx) {
         ctx.lineWidth = canvas.lineWidth
-        ctx.strokeStyle = canvas.colorStroke
         ctx.beginPath()
         ctx.moveTo(lastX, lastY)
         lastX = area.mouseX
@@ -128,10 +157,23 @@ Canvas {
         //console.log(url)
     }
 
-    function loadImageInCanvas(context) {
-        context.drawImage(sourceImage, 0, 0)
+    function loadImageInCanvas(ctx) {
+        var startX = 0
+        var startY = 0
+        if(sourceImage.width < canvas.width) {
+            var spaceWidth = canvas.width - sourceImage.width
+            startX = spaceWidth / 2
+        }
+        if(sourceImage.height < canvas.height) {
+            var spaceHeight = canvas.height - sourceImage.height
+            startY = spaceHeight / 2
+        }
+        ctx.drawImage(sourceImage, startX, startY)
         canvas.loadImage = false
-        context.save()
+        canvas.height = sourceImage.height
+        canvas.width = sourceImage.width
+        console.log(canvas.x)
+        console.log(canvas.y)
     }
 
     function repaintImageInCanvas(context) {

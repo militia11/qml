@@ -2,22 +2,23 @@ import QtQuick 2.0
 
 Tool {
     TextTool {
-        text: "radius"
+        text: "font size"
     }
     onVisibleChanged: {
         if(visible) {
-            blurSlider.value = 0
+            //fontSizeSlider.value = 0
         }
     }
 
     FancySlider {
-        id: blurSlider
-        from: 0
-        to: 35
+        id: fontSizeSlider
+        minimumValue: 0
+        maximumValue: 35
         value: 0
         enabled: true
         onValueChanged: {
-            effects.currentEffect.radius = blurSlider.value
+           //effects.currentEffect.radius = blurSlider.value
         }
     }
 }
+

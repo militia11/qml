@@ -1,15 +1,20 @@
 import QtQuick 2.0
 
 Tool {
-    onVisibleChanged: {}
+    onVisibleChanged: {
+        if(visible) {
+            frequency.value = 4.2
+            amplitude.value = 0.1
+        }
+    }
 
     TextTool {
         text: "frequency"
     }
     FancySlider {
         id: frequency
-        minimumValue: 1
-        maximumValue: 7.4
+        from: 1
+        to: 7.4
         value: 4.2
         onValueChanged: {
             effects.currentEffect.frequency = frequency.value
@@ -21,8 +26,8 @@ Tool {
     }
     FancySlider {
         id: amplitude
-        minimumValue: 0.01
-        maximumValue: 0.19
+        from: 0.01
+        to: 0.19
         value: 0.1
         onValueChanged: {
             effects.currentEffect.amplitude = amplitude.value

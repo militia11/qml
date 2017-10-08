@@ -8,6 +8,4 @@ ColorDialog {
      onRejected: {
          close()
      }
-     // maybe TODO dynamically
-     //Component.onCompleted: visible = true
 }

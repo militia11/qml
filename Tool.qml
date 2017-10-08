@@ -5,12 +5,10 @@ Column {
     anchors.verticalCenter: parent.verticalCenter
     anchors.horizontalCenter: parent.horizontalCenter
     visible: false
-    spacing: 6
+    spacing: 10
     onVisibleChanged: {
         if(!visible) {
             effects.toImage()
-            canvas.repaintImage = true;
-            timerPaintAfterEffectToImage.start()
         }
     }
 }

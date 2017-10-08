@@ -2,7 +2,7 @@ import QtQuick 2.3
 
 Item {
     id: root
-    width: 240; height: parent.height
+    width: 210; height: parent.height
     state: "expanded"
 
     Rectangle {
@@ -30,17 +30,12 @@ Item {
         id: container
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 160
-        spacing: 70
-
-        MainButton {
-            id: x
-            text: "DEMO"
-        }
+        anchors.topMargin: 200
+        spacing: 80
 
         MainButton {
             id: load
-            text: "LOAD"
+            iconSource: "qrc:///images/load.png"
             onClicked: {
                 imageDialog.open()
             }
@@ -48,7 +43,9 @@ Item {
 
         MainButton {
             id: save
-            text: "SAVE"
+            iconSource: "qrc:///images/save.png"
+            onClicked:
+                effects.switchActiveEffect("GENIE")
         }
     }
 
@@ -63,10 +60,7 @@ Item {
                 target: save
                 opacity: 0
             }
-            PropertyChanges {
-                target: x
-                opacity: 0
-            }
+
             PropertyChanges {
                 target: showMenuButton
                 opacity: 1
@@ -74,6 +68,7 @@ Item {
         },
         State {
             name: "expanded"
+
             PropertyChanges {
                 target: load
                 opacity: 1
@@ -82,10 +77,7 @@ Item {
                 target: save
                 opacity: 1
             }
-            PropertyChanges {
-                target: x
-                opacity: 1
-            }
+
             PropertyChanges {
                 target: showMenuButton
                 opacity: 0
