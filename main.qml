@@ -21,7 +21,6 @@ Window {
 
     Image {
         id: sourceImage
-        //fillMode: Image.PreserveAspectFit
         visible: false
         source: "qrc:///images/sourceImage.png"
     }
@@ -54,7 +53,7 @@ Window {
             ListElement { name: "EFFECTS" }
             ListElement { name: "PAINT" }
             ListElement { name: "SHAPES" }
-            ListElement { name: "TEXT" }
+            ListElement { name: "ISOLATE" }
             ListElement { name: "COLORS" }
             ListElement { name: "EDGE" }
             ListElement { name: "BLUR" }
@@ -103,8 +102,13 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
 
                 Loader {
-                    id: loaderCamera
+                    id: loaderOnCanvas
                     anchors.fill: parent
+                    function deactivateLoader() {
+                        anchors.fill = undefined
+                        source = ""
+                        canvas.visible = true
+                    }
                 }
             }
 
@@ -130,8 +134,8 @@ Window {
         effects.visibleEffect()
 //        pathViewButtons.positionViewAtIndex(9, PathView.Center)
 //        tools.switchActiveToolbars("SHARPEN")
-//          pathViewButtons.positionViewAtIndex(2, PathView.Center)
-//          tools.switchActiveToolbars("SHAPES")
+          pathViewButtons.positionViewAtIndex(2, PathView.Center)
+          tools.switchActiveToolbars("SHAPES")
 //       tools.visible = true
 //           var keys = Object.keys(root);
 //           for(var i=0; i<keys.length; i++) {

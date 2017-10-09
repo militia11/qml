@@ -166,8 +166,8 @@ Item {
         id: eWave
         width: sourceImage.width; height: sourceImage.height
         property variant source: sourceImage
-        property real frequency: 4.2
-        property real amplitude: 0.1
+        property real frequency: 0.0
+        property real amplitude: 0.0
         property real time: 0.0
         NumberAnimation on time {
             from: 0; to: Math.PI*2; duration: 1000; loops: Animation.Infinite

@@ -60,7 +60,7 @@ Tool {
 
     ResetButton {
         id: resetHsl
-        onReset: {
+        onClick: {
             hSlider.value = 0
             sSlider.value = 0
             lSlider.value = 0

@@ -21,7 +21,19 @@ Item {
         }
     }
 
-    function disabledScrollPathView() { timerScrollPathView.running = false}
+    Timer {
+        id: timerDelayAfterCapture
+        interval: 100
+        repeat: false
+        running: false
+        onTriggered: {
+           effects.activate()
+           tools.resetVideo()
+        }
+    }
+    function delayAfterCapture() { timerDelayAfterCapture.start() }
+    function disabledScrollPathView() { timerScrollPathView.start() }
     function startScroll(){ timerScrollPathView.start()}
     function requestPaintAfterDelay() { timerRequestPaintAfterDelay.start() }
+
 }

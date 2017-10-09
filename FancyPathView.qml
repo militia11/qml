@@ -6,7 +6,7 @@ PathView {
     delegate: buttonsViewDelegate
     model: effectsNames
     focus: true
-    property bool firstStart: true
+    property bool effectButtonOnPath: true
     property string keyButton: ""
 
     path: Path {
@@ -72,9 +72,9 @@ PathView {
     }
 
     function deactivateEffectsButton() {
-        if(firstStart) {
+        if(effectButtonOnPath) {
             effectsNames.remove(0)
-            firstStart = false
+            effectButtonOnPath = false
         }
     }
 
@@ -83,7 +83,7 @@ PathView {
             effectsNames.insert(0, { name: "EFFECTS"} )
             root.positionViewAtIndex(0, PathView.Center)
             effects.switchActiveEffect("EFFECTS")
-            firstStart = true
+            effectButtonOnPath = true
         }
     }
 

@@ -130,7 +130,7 @@ Tool {
         delegate: ItemDelegate {
             width: comboComposite.width
             contentItem: Text {
-                text: modelData
+                text: modelData.replace("qt", "").replace("-", " ").replace("-", " ").toUpperCase()
                 color: "#558C89"
                 font: comboComposite.font
                 elide: Text.ElideRight
@@ -168,7 +168,7 @@ Tool {
             leftPadding: 0
             rightPadding: comboComposite.indicator.width + comboComposite.spacing
 
-            text: comboComposite.displayText
+            text: comboComposite.displayText.replace("qt", "").replace("-", " ").replace("-", " ").toUpperCase()
             font: comboComposite.font
             color: comboComposite.pressed ? "#D9853B" : Qt.lighter("#74AFAD", 1.3)
             horizontalAlignment: Text.AlignHCenter

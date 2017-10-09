@@ -41,7 +41,7 @@ Tool {
 
     ResetButton {
         id: resetRgb
-        onReset: {
+        onClick: {
             repeaterColors.itemAt(0).value = 1.0
             repeaterColors.itemAt(1).value = 1.0
             repeaterColors.itemAt(2).value = 1.0

@@ -28,6 +28,6 @@ Tool {
 
     ResetButton {
         id: resetLuminance
-        onReset: luminanceSlider.value = 1
+        onClick: luminanceSlider.value = 1
     }
 }

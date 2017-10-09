@@ -26,6 +26,6 @@ Tool {
 
     ResetButton {
         id: resetBlur
-        onReset: blurSlider.value = 0
+        onClick: blurSlider.value = 0
     }
 }

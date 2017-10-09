@@ -23,12 +23,17 @@
         <file>ToolBrightness.qml</file>
         <file>images/eraser.png</file>
         <file>images/sourceImage.png</file>
-		<file>images/camera.png</file>
+        <file>images/camera.png</file>
+        <file>images/stop.png</file>
+        <file>images/video.png</file>
+		<file>images/smallVideo.png</file>
+        <file>images/no.png</file>
+		<file>images/menu.png</file>
         <file>FancyPathView.qml</file>
         <file>FancyPathDelegate.qml</file>
         <file>ToolLuminance.qml</file>
         <file>ToolHsl.qml</file>
-        <file>ToolAddText.qml</file>
+        <file>ToolIsolate.qml</file>
         <file>ToolRBlur.qml</file>
         <file>ToolSharpen.qml</file>
         <file>images/star.png</file>
@@ -46,5 +51,9 @@
         <file>ShapeButton.qml</file>
         <file>Timers.qml</file>
         <file>FancyCamera.qml</file>
+        <file>DemoGlowLines.qml</file>
+        <file>FancyCanvasButton.qml</file>
+        <file>VideoButton.qml</file>
+        <file>AnimatedButton.qml</file>
     </qresource>
 </RCC>

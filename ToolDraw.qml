@@ -1,6 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.2
-//import QtQuick.Controls.Styles 1.4
+
 import CanvasModes 1.0
 
 Tool {
@@ -10,7 +10,7 @@ Tool {
 
     property color colorStroke: "#558C89"
     property color colorFill: "lightblue"
-    property int lineWidth: 2
+    property int lineWidth: 3
 
     TextTool {
         text: "size"
@@ -26,7 +26,7 @@ Tool {
     }
 
     Repeater {
-        model: ["lightblue", "#33B5E5", "blue",
+        model: ["lightblue", "#558C89", "blue",
             "lightgreen", "#99CC00", "green", "gold",
             "#FFBB33","#FF4444" , "red", "black"]
         ColorSquare {
@@ -50,7 +50,7 @@ Tool {
              id: recInButtonStyle
                 color: eraserButton.checked ? "white" : "transparent"
                 border.width: eraserButton.hovered || eraserButton.checked ? 3 : 0
-                border.color: eraserButton.hovered || eraserButton.checked ?  Qt.lighter("#74AFAD", 1.13) : "#888"
+                border.color: Qt.lighter("#74AFAD", 1.13)
                 radius: 5
             }
 

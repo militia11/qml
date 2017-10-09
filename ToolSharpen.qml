@@ -2,6 +2,7 @@ import QtQuick 2.6
 import QtQuick.Controls 2.1
 
 Tool {
+    autoSave: false
     onVisibleChanged: {
         if(visible) {
             sharpSlider.value = 9
@@ -25,8 +26,8 @@ Tool {
 
     ApplyButton {
         id: applySharpness
-        onAccept: {
-
+        onClick: {
+            effects.toImage()
         }
     }
 }

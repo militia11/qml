@@ -1,19 +1,19 @@
-import QtQuick 2.0
+import QtQuick 2.9
 
 Tool {
     TextTool {
-        text: "font size"
+        text: "hue"
     }
     onVisibleChanged: {
         if(visible) {
-            //fontSizeSlider.value = 0
+            hSlider.value = 0
         }
     }
 
     FancySlider {
-        id: fontSizeSlider
-        minimumValue: 0
-        maximumValue: 35
+        id: hSlider
+        from: 0
+        to: 35
         value: 0
         enabled: true
         onValueChanged: {

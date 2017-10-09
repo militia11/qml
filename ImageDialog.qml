@@ -10,7 +10,6 @@ FileDialog {
     onAccepted: {
         sourceImage.source = imageDialog.fileUrl
         sourceImage.update()
-
         canvas.loadImage = true
         canvas.requestPaint()
   //      effects.switchActiveEffect("CURTAIN")

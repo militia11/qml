@@ -3,5 +3,7 @@ import QtQuick.Controls 2.1
 
 AnimatedButton {
     id: control
-    sourceImage: "qrc:///images/reset.png"
+    sourceImage: "qrc:///images/smallVideo.png"
 }
+
+

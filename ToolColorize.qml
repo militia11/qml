@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 Tool {
+    autoSave: false
     onVisibleChanged: {
         if(visible) {
             chSlider.value = 0
@@ -60,5 +61,8 @@ Tool {
 
     ApplyButton {
         id: applyColorize
+        onClick: {
+             effects.toImage()
+        }
     }
 }

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 Tool {
+    autoSave: false
     onVisibleChanged: {
         if(visible) {
             edgeSlider.value = 0.5
@@ -25,8 +26,8 @@ Tool {
 
     ApplyButton {
         id: applyEdge
-        onAccept: {
-
+        onClick: {
+             effects.toImage()
         }
     }
 }

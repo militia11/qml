@@ -43,7 +43,7 @@ Tool {
 
     ResetButton {
         id: resetBrightness
-        onReset: {
+        onClick: {
             brightnessSlider.value = 0
             contrastSlider.value = 0
         }

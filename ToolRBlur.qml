@@ -57,7 +57,7 @@ Tool {
 
     ResetButton {
         id: resetRBlur
-        onReset: {
+        onClick: {
             angleBlurSlider.value = 0
             hOffsetSlider.value = 0
             vOffsetSlider.value = 0

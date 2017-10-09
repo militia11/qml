@@ -62,6 +62,11 @@ Item {
     ToolWave {
         id: toolWave
     }
+
+    ToolIsolate {
+        id: toolIsolate
+    }
+
     TextArea {
         id: textTip
         anchors.horizontalCenter: parent.horizontalCenter
@@ -95,8 +100,8 @@ Item {
             case "COLORS":
                 currentTool = toolRgb
                 break;
-            case "TEXT":
-                //  currentTool = toolText
+            case "ISOLATE":
+                  currentTool = toolIsolate
                 break;
             case "BLUR":
                 currentTool = toolBlur
@@ -131,6 +136,7 @@ Item {
         visibleTool()
     }
 
+    function resetVideo() { toolWave.resetValues() }
     function printToolTip(action) {
         var tip;
         switch(action) {
@@ -149,8 +155,11 @@ Item {
             case "BLUR":
                 tip = "Applies a higher quality blur effect"
                 break
+            case "ISOLATE":
+                tip = "Isolate selected hue"
+                break
             case "BRIGHTNESS":
-                tip = "Define brightness and contrast"
+                tip = "Define brightness and contrast of the current canvas wiev"
                 break;
             case "LUMINANCE":
                 tip = "Luminous intensity per unit area of light travelling "
@@ -165,13 +174,13 @@ Item {
                 tip = "Define sharpness level"
                 break
             case "EDGE":
-                tip = "Edge detection effect"
+                tip = "Edge detection effect. Black and white colors"
                 break
             case "RADIAL BLUR":
                 tip = "Applies directional blur in a circular direction around the items center point"
                 break
             case "WAVE":
-                tip = "Wave effect with amplitude and frequency todO OPIS Z QMLBOOK"
+                tip = "Wave effect. Define frequency of the pulse and amplitude of texture coordinate"
                 break;
             default:
                 tip = ""

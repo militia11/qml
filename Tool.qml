@@ -6,8 +6,10 @@ Column {
     anchors.horizontalCenter: parent.horizontalCenter
     visible: false
     spacing: 10
+    property bool autoSave: true
     onVisibleChanged: {
-        if(!visible) {
+        if(!visible && autoSave) {
+            autoSave = false
             effects.toImage()
         }
     }

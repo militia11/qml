@@ -68,11 +68,12 @@ Canvas {
                 lastX = mouseX
                 lastY = mouseY
                 if(mode == CanvasModes.ADDSHAPES) {
-                    copyFirst = true
                     requestPaint()
+                    copyFirst = true
                     tempImage.update()
                     tempImage.visible = true
-                }
+                } else if(mode == CanvasModes.DRAWING)
+                    particlesEmmiterDraw.burst(110)
             }
         }
 
@@ -94,7 +95,9 @@ Canvas {
                 if(mode == CanvasModes.ADDSHAPES) {
                      shapeWidth = mouseX - lastX
                      shapeHeight = mouseY - lastY
-                }
+                } else if(mode == CanvasModes.RUBBER){
+                }// else if(mode == CanvasModes.DRAWING){}
+
                 requestPaint()
             }
         }
@@ -103,6 +106,28 @@ Canvas {
     ParticleSystem {
         x: area.mouseX
         y: area.mouseY
+
+        ImageParticle {
+            color: 'red'
+            colorVariation: 0.6
+            source: "qrc:///images/star.png"
+            alpha: 0.3
+        }
+
+        Emitter {
+            id: particlesEmmiterDraw
+            anchors.centerIn: parent
+            emitRate: 0
+            lifeSpan: 400
+            size: 32
+            velocity: AngleDirection {angleVariation: 360; magnitude: 460 }
+        }
+    }
+
+    ParticleSystem {
+        x: area.mouseX
+        y: area.mouseY
+
         ImageParticle {
             source: "qrc:///images/star.png"
             color: tools.colorFill
@@ -116,7 +141,7 @@ Canvas {
             lifeSpan: 790
             velocity: AngleDirection {angleVariation: 360; magnitude: 199; magnitudeVariation: 130}
             size: 21
-        }        
+        }
     }
 
     function drawShape(ctx) {
@@ -153,12 +178,9 @@ Canvas {
         lastY = area.mouseY
         ctx.lineTo(lastX, lastY)
         ctx.stroke()
-        console.log("sourceImage"+ sourceImage.width)
-        console.log("res"+ canvas.width)
     }
 
     function canvasDataToSourceImage() {
-        console.log("canvas::canvasDataToSourceImage")
         var url = toDataURL('image/png')
         sourceImage.source = url
         //console.log(url)
