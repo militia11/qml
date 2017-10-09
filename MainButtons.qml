@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.6
 import QtQuick.Controls 2.2
 
 Item {
@@ -8,14 +8,9 @@ Item {
 
     Button {
         id: showMenuButton
-        x: -27
-        width: 87;  height: 87
-        anchors {
-            top: parent.top
-            topMargin: 0
-            right: parent.left
-            rightMargin: -20
-        }
+        x: -57
+        y: -10
+        width: 86;  height: 86
 
         opacity: 0
         background:

@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.6
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Styles 1.4
 import ShapesTypes 1.0
