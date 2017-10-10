@@ -1,10 +1,13 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Styles 1.4
+
 import ShapesTypes 1.0
 import CanvasModes 1.0
 
 Item {
+    id: root
+    width: 200; height: 800
     anchors.verticalCenter: parent.verticalCenter
 
     property int strokeSize: toolShapes.strokeSize
@@ -84,7 +87,6 @@ Item {
             height: parent.height
         }
     }
-
 
     function switchActiveToolbars(action) {
         canvas.mode = CanvasModes.NONE

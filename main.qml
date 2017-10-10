@@ -1,12 +1,12 @@
-import QtQuick 2.3
-import QtQuick.Window 2.2
+import QtQuick 2.7
+import QtQuick.Controls 2.2
 
 // TODO ANIMACJE PARTICLE GDY START I/A TAKZE BUTTONS NA EFFECTS
 
 //kolory
 // Qt.lighter("#74AFAD", 1.3)
 //Qt.lighter("#558C89", 1.2) D9853B
-Window {
+ApplicationWindow {
     id: root
     width: 1580
     height: 800
@@ -134,8 +134,8 @@ Window {
         effects.visibleEffect()
 //        pathViewButtons.positionViewAtIndex(9, PathView.Center)
 //        tools.switchActiveToolbars("SHARPEN")
-          pathViewButtons.positionViewAtIndex(2, PathView.Center)
-          tools.switchActiveToolbars("SHAPES")
+//          pathViewButtons.positionViewAtIndex(2, PathView.Center)
+//          tools.switchActiveToolbars("SHAPES")
 //       tools.visible = true
 //           var keys = Object.keys(root);
 //           for(var i=0; i<keys.length; i++) {

@@ -6,7 +6,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     signal clicked
     property bool active: false
-    border.color: active? "white" : Qt.lighter("#74AFAD", 1.13)
+    border.color: active? Qt.lighter("#74AFAD", 1.46) : Qt.lighter("#74AFAD", 1.15)
     border.width: active? 4 : 3
 
     MouseArea {

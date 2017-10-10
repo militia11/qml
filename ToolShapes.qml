@@ -58,6 +58,7 @@ Tool {
 
     Row {
         spacing: 10
+        anchors.horizontalCenter: parent.horizontalCenter
         Column {
             TextTool {
                 text: "fill"
@@ -88,24 +89,6 @@ Tool {
                 id: colorDialogFrame
                 onAccepted: {
                     root.colorStroke = colorDialogFrame.color
-                    close()
-                }
-            }
-        }
-
-        Column {
-            TextTool {
-                text: "back"
-            }
-            ColorButton {
-                color: canvasBackground.colour
-                onClicked: colorDialogBackground.open()
-            }
-            ColorSelectDialog {
-                id: colorDialogBackground
-                onAccepted: {
-                    canvasBackground.colour = colorDialogBackground.color
-                    canvas.requestPaint()
                     close()
                 }
             }

@@ -6,6 +6,8 @@ Tool {
         if(visible) {
             frequency.value = 0.0
             amplitude.value = 0.0
+            effects.currentEffect.frequency = 0.0
+            effects.currentEffect.amplitude = 0.0
             resetWave.opacity = 0
             videoButton.opacity = 0
         }

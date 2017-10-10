@@ -32,7 +32,7 @@ Component {
             horizontalAlignment: Text.AlignHCenter
             font.family: "Lucida Sans Unicode" //Helvetica
             font.pointSize: 18.5
-            color: "#ECECEA"
+            color: wrapper.PathView.isCurrentItem ? Qt.lighter("#74AFAD", 1.51) : Qt.lighter("#74AFAD", 1.28)//"#ECECEA"
             text: control.text
            }
         }

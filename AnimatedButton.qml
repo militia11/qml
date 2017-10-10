@@ -20,18 +20,4 @@ Button {
             anchors.fill: recInButtonStyle
             source: sourceImage
         }
-
-    onClicked: {
-        opacityAnimation.running = true
-        control.click()
-    }
-
-    PropertyAnimation {
-        id: opacityAnimation
-        target: control
-        property: "opacity"
-        from: 1
-        to: 0
-        duration: 900
-    }
 }

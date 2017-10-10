@@ -18,7 +18,7 @@ Button {
         }
 
         Image {
-          width: 109;height: 109
+           width: 109;height: 109
            anchors.fill: recInButtonStyle
            source: control.sourceImage
        }
@@ -29,7 +29,7 @@ Button {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: 1500
+            duration: 900
         }
     }
 }

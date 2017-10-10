@@ -10,7 +10,7 @@ Tool {
 
     property color colorStroke: "#558C89"
     property color colorFill: "lightblue"
-    property int lineWidth: 3
+    property int lineWidth: 6
 
     TextTool {
         text: "size"
@@ -48,7 +48,7 @@ Tool {
         background:
             Rectangle {
              id: recInButtonStyle
-                color: eraserButton.checked ? "white" : "transparent"
+                color: eraserButton.checked ? Qt.lighter("#74AFAD", 1.45) : "transparent"
                 border.width: eraserButton.hovered || eraserButton.checked ? 3 : 0
                 border.color: Qt.lighter("#74AFAD", 1.13)
                 radius: 5

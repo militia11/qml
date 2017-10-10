@@ -5,6 +5,7 @@ import CanvasModes 1.0
 import ShapesTypes 1.0
 
 Canvas {
+    id: root
     property int mode: CanvasModes.NONE
     property bool copyFirst: false
     property bool putLast: false
@@ -72,8 +73,11 @@ Canvas {
                     copyFirst = true
                     tempImage.update()
                     tempImage.visible = true
-                } else if(mode == CanvasModes.DRAWING)
-                    particlesEmmiterDraw.burst(110)
+                } else if(mode == CanvasModes.DRAWING) {
+                    particleEmitterDrawing.enabled = true
+                    particleSysDrawing.running = true
+                }
+                    //particlesEmmiterDraw.burst(110)
             }
         }
 
@@ -86,7 +90,8 @@ Canvas {
                     putLast = true
                     requestPaint()
                     tempImage.visible = false
-                }
+                } else if(mode == CanvasModes.DRAWING)
+                    particleEmitterDrawing.enabled = false
             }
         }
 
@@ -95,8 +100,7 @@ Canvas {
                 if(mode == CanvasModes.ADDSHAPES) {
                      shapeWidth = mouseX - lastX
                      shapeHeight = mouseY - lastY
-                } else if(mode == CanvasModes.RUBBER){
-                }// else if(mode == CanvasModes.DRAWING){}
+                } else if(mode == CanvasModes.RUBBER){}
 
                 requestPaint()
             }
@@ -104,25 +108,63 @@ Canvas {
     }
 
     ParticleSystem {
-        x: area.mouseX
-        y: area.mouseY
-
+        id: particleSysDrawing
+        running: false
         ImageParticle {
-            color: 'red'
-            colorVariation: 0.6
-            source: "qrc:///images/star.png"
-            alpha: 0.3
+            source: "qrc:///images/star.png"//bubble
+            color: tools.colorFill
+            colorVariation: 0.15
+            rotation: 0
+            rotationVariation: 52
+            rotationVelocity: 25
+            rotationVelocityVariation: 25
+            entryEffect: ImageParticle.Scale
         }
 
         Emitter {
-            id: particlesEmmiterDraw
-            anchors.centerIn: parent
-            emitRate: 0
-            lifeSpan: 400
-            size: 32
-            velocity: AngleDirection {angleVariation: 360; magnitude: 460 }
+            id: particleEmitterDrawing
+            x: area.mouseX
+            y: area.mouseY
+            width: 1; height: 1
+            emitRate: 28
+            lifeSpan: 6200
+            size: tools.lineWidth * 4.8
+            velocity: AngleDirection {
+                angle: 155
+                angleVariation: 15
+                magnitude: 140
+                magnitudeVariation: 40
+            }
+        }
+        Gravity {
+               system: particleSysDrawing
+               magnitude: 115
+               angle: 90
+               anchors.fill: root
         }
     }
+
+
+//    ParticleSystem {
+//        x: area.mouseX
+//        y: area.mouseY
+
+//        ImageParticle {
+//            color: 'red'
+//            colorVariation: 0.6
+//            source: "qrc:///images/star.png"
+//            alpha: 0.3
+//        }
+
+//        Emitter {
+//            id: particlesEmmiterDraw
+//            anchors.centerIn: parent
+//            emitRate: 0
+//            lifeSpan: 400
+//            size: 32
+//            velocity: AngleDirection {angleVariation: 360; magnitude: 460 }
+//        }
+//    }
 
     ParticleSystem {
         x: area.mouseX

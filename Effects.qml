@@ -12,6 +12,10 @@ Item {
         id: eGenie
     }
 
+    EffectIsolate {
+        id: eIsolate
+    }
+
     Effect {
         id: eRgb
         property real red: 1.0
@@ -230,9 +234,11 @@ Item {
                 visibleEffect()
                 onCanvas()
                 return
-                //break
             case "COLORS":
                 currentEffect = eRgb;
+                break;
+            case "ISOLATE":
+                currentEffect = eIsolate;
                 break;
             case "BLUR":
                 currentEffect = eBlur

@@ -26,9 +26,9 @@
         <file>images/camera.png</file>
         <file>images/stop.png</file>
         <file>images/video.png</file>
-		<file>images/smallVideo.png</file>
+        <file>images/smallVideo.png</file>
         <file>images/no.png</file>
-		<file>images/menu.png</file>
+        <file>images/menu.png</file>
         <file>FancyPathView.qml</file>
         <file>FancyPathDelegate.qml</file>
         <file>ToolLuminance.qml</file>
@@ -55,5 +55,7 @@
         <file>FancyCanvasButton.qml</file>
         <file>VideoButton.qml</file>
         <file>AnimatedButton.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>EffectIsolate.qml</file>
     </qresource>
 </RCC>
