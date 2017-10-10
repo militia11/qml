@@ -16,99 +16,16 @@ Item {
         id: eIsolate
     }
 
-    Effect {
+    EffectRgb {
         id: eRgb
-        property real red: 1.0
-        property real green: 1.0
-        property real blue: 1.0
-        fragmentShader: "
-            varying highp vec2 qt_TexCoord0;
-            uniform sampler2D source;
-            uniform lowp float qt_Opacity;
-            uniform lowp float red;
-            uniform lowp float green;
-            uniform lowp float blue;
-            void main() {
-                gl_FragColor = texture2D(source, qt_TexCoord0) * vec4(red, green, blue, 1.0) * qt_Opacity;
-            }"
     }
 
-    Effect {
+    EffectEdge {
         id: eEdge
-        property real mixLevel: 0.5
-        property real targetSize: 250 - (200 * mixLevel) // TODO: fix ...
-        property real resS: targetSize
-        property real resT: targetSize
-        fragmentShader: "
-            uniform float mixLevel;
-            uniform float resS;
-            uniform float resT;
-
-            uniform sampler2D source;
-            uniform lowp float qt_Opacity;
-            varying vec2 qt_TexCoord0;
-
-            void main()
-            {
-                vec2 uv = qt_TexCoord0.xy;
-                vec4 c = vec4(0.0);
-                    vec2 st = qt_TexCoord0.st;
-                    vec3 irgb = texture2D(source, st).rgb;
-                    vec2 stp0 = vec2(1.0 / resS, 0.0);
-                    vec2 st0p = vec2(0.0       , 1.0 / resT);
-                    vec2 stpp = vec2(1.0 / resS, 1.0 / resT);
-                    vec2 stpm = vec2(1.0 / resS, -1.0 / resT);
-                    const vec3 W = vec3(0.2125, 0.7154, 0.0721);
-                    float i00   = dot(texture2D(source, st).rgb, W);
-                    float im1m1 = dot(texture2D(source, st-stpp).rgb, W);
-                    float ip1p1 = dot(texture2D(source, st+stpp).rgb, W);
-                    float im1p1 = dot(texture2D(source, st-stpm).rgb, W);
-                    float ip1m1 = dot(texture2D(source, st+stpm).rgb, W);
-                    float im10  = dot(texture2D(source, st-stp0).rgb, W);
-                    float ip10  = dot(texture2D(source, st+stp0).rgb, W);
-                    float i0m1  = dot(texture2D(source, st-st0p).rgb, W);
-                    float i0p1  = dot(texture2D(source, st+st0p).rgb, W);
-                    float h = -1.0*im1p1 - 2.0*i0p1 - 1.0*ip1p1 + 1.0*im1m1 + 2.0*i0m1 + 1.0*ip1m1;
-                    float v = -1.0*im1m1 - 2.0*im10 - 1.0*im1p1 + 1.0*ip1m1 + 2.0*ip10 + 1.0*ip1p1;
-                    float mag = 1.0 - length(vec2(h, v));
-                    vec3 target = vec3(mag, mag, mag);
-                    c = vec4(target, 1.0);
-                gl_FragColor = qt_Opacity * c;
-            }"
     }
 
-    Effect {
+    EffectSharpen {
         id: eSharpen
-        property real amount: 9
-        fragmentShader: "
-            uniform float amount;
-            const float step_w = 0.0015625;
-            const float step_h = 0.0027778;
-
-            uniform sampler2D source;
-            uniform lowp float qt_Opacity;
-            varying vec2 qt_TexCoord0;
-
-            vec3 sharpen(vec3 t1, vec3 t2, vec3 t3, vec3 t4, vec3 t5, vec3 t6, vec3 t7, vec3 t8, vec3 t9)
-            {
-                return -t1 - t2 - t3 - t4 + amount * t5 - t6 - t7 - t8 - t9;
-            }
-
-            void main()
-            {
-                vec2 uv = qt_TexCoord0.xy;
-                vec3 t1 = texture2D(source, vec2(uv.x - step_w, uv.y - step_h)).rgb;
-                vec3 t2 = texture2D(source, vec2(uv.x, uv.y - step_h)).rgb;
-                vec3 t3 = texture2D(source, vec2(uv.x + step_w, uv.y - step_h)).rgb;
-                vec3 t4 = texture2D(source, vec2(uv.x - step_w, uv.y)).rgb;
-                vec3 t5 = texture2D(source, uv).rgb;
-                vec3 t6 = texture2D(source, vec2(uv.x + step_w, uv.y)).rgb;
-                vec3 t7 = texture2D(source, vec2(uv.x - step_w, uv.y + step_h)).rgb;
-                vec3 t8 = texture2D(source, vec2(uv.x, uv.y + step_h)).rgb;
-                vec3 t9 = texture2D(source, vec2(uv.x + step_w, uv.y + step_h)).rgb;
-                vec3 col = sharpen(t1, t2, t3, t4, t5, t6, t7, t8, t9);
-                gl_FragColor = qt_Opacity * vec4(col, 1.0);
-            }"
     }
 
     GaussianBlur {
@@ -166,29 +83,8 @@ Item {
         id: eCurtain
     }
 
-    ShaderEffect {
+    EffectWave {
         id: eWave
-        width: sourceImage.width; height: sourceImage.height
-        property variant source: sourceImage
-        property real frequency: 0.0
-        property real amplitude: 0.0
-        property real time: 0.0
-        NumberAnimation on time {
-            from: 0; to: Math.PI*2; duration: 1000; loops: Animation.Infinite
-        }
-
-        fragmentShader: "
-            varying highp vec2 qt_TexCoord0;
-            uniform sampler2D source;
-            uniform lowp float qt_Opacity;
-            uniform highp float frequency;
-            uniform highp float amplitude;
-            uniform highp float time;
-            void main() {
-                highp vec2 pulse = sin(time - frequency * qt_TexCoord0);
-                highp vec2 coord = qt_TexCoord0 + amplitude * vec2(pulse.x, -pulse.x);
-                gl_FragColor = texture2D(source, coord) * qt_Opacity;
-            }"
     }
 
     function onCanvas() {

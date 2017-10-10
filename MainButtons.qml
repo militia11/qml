@@ -54,7 +54,7 @@ Item {
         MainButton {
             id: demo
             checkable: true
-            sourceImage: "qrc:///images/stop.png"
+            sourceImage: "qrc:///images/lines.png"
             onClicked: {
                 if(demo.checked) {
                     pathViewButtons.interactive = false
@@ -85,18 +85,15 @@ Item {
 
         MainButton {
             id: camera
-            checkable: true
+            checkable: true           
             sourceImage: "qrc:///images/video.png"
             onClicked: {
                 if(camera.checked) {
+                    canvas.visible = false
                     loaderOnCanvas.source = "FancyCamera.qml"
                     canvas.visible = false
                     pathViewButtons.interactive = false
                     container.freezeOtherMenuButtons(camera)
-                } else {
-                    pathViewButtons.interactive = true
-                    loaderOnCanvas.deactivateLoader();
-                    container.activeMenuButtons()
                 }
             }
         }

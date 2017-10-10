@@ -56,12 +56,12 @@ Tool {
 
             Image {
                 anchors.fill: recInButtonStyle
-               source: "qrc:///images/eraser.png"
+                source: "qrc:///images/eraser.png"
 
            }
         onClicked: {
             if (eraserButton.checked) {
-                root.colorStroke = "transparent"
+                root.colorStroke = "white"
                 canvas.mode = CanvasModes.RUBBER
             }
         }

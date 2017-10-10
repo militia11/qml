@@ -34,7 +34,7 @@ Tool {
         to: 100
         value: 0
         onValueChanged: {
-            effects.currentEffect.verticalOffset = hOffsetSlider.value
+            effects.currentEffect.horizontalOffset = hOffsetSlider.value
             if(resetRBlur.opacity == 0)
                 resetRBlur.opacity = 1
         }

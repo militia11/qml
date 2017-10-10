@@ -3,10 +3,7 @@ import QtQuick.Controls 2.2
 import ShapesTypes 1.0
 
 Tool {
-    id: root
     property int strokeSize
-    property color colorFill: toolDraw.colorFill
-    property color colorStroke: toolDraw.colorStroke
     spacing: 13
 
     Row {
@@ -41,21 +38,6 @@ Tool {
         }
     }
 
-    TextTool {
-        text: "frame size"
-    }
-
-    FancySlider {
-        id: frameSlider
-        from: 1
-        to: 45
-        value: 1
-        enabled: true
-        onValueChanged: {
-            root.strokeSize = frameSlider.value
-        }
-    }
-
     Row {
         spacing: 10
         anchors.horizontalCenter: parent.horizontalCenter
@@ -70,7 +52,7 @@ Tool {
             ColorSelectDialog {
                 id: colorDialogFill
                 onAccepted: {
-                    root.colorFill = colorDialogFill.color
+                    toolDraw.colorFill = colorDialogFill.color
                     close()
                 }
             }
@@ -88,13 +70,26 @@ Tool {
             ColorSelectDialog {
                 id: colorDialogFrame
                 onAccepted: {
-                    root.colorStroke = colorDialogFrame.color
+                    toolDraw.colorStroke = colorDialogFrame.color
                     close()
                 }
             }
         }
     }
+    TextTool {
+        text: "frame size"
+    }
 
+    FancySlider {
+        id: frameSlider
+        from: 1
+        to: 45
+        value: 1
+        enabled: true
+        onValueChanged: {
+            root.strokeSize = frameSlider.value
+        }
+    }
     TextTool {
         text: "composition"
     }
@@ -113,7 +108,7 @@ Tool {
         delegate: ItemDelegate {
             width: comboComposite.width
             contentItem: Text {
-                text: modelData.replace("qt", "").replace("-", " ").replace("-", " ").toUpperCase()
+                text: modelData.replace("qt", "").replace("-", " ").replace("-", " ").replace("destination over", "STANDARD").toUpperCase()
                 color: "#558C89"
                 font: comboComposite.font
                 elide: Text.ElideRight
@@ -151,7 +146,7 @@ Tool {
             leftPadding: 0
             rightPadding: comboComposite.indicator.width + comboComposite.spacing
 
-            text: comboComposite.displayText.replace("qt", "").replace("-", " ").replace("-", " ").toUpperCase()
+            text: comboComposite.displayText.replace("qt", "").replace("-", " ").replace("-", " ").replace("destination over", "STANDARD").toUpperCase()
             font: comboComposite.font
             color: comboComposite.pressed ? "#D9853B" : Qt.lighter("#74AFAD", 1.3)
             horizontalAlignment: Text.AlignHCenter

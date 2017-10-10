@@ -57,5 +57,10 @@
         <file>AnimatedButton.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>EffectIsolate.qml</file>
+        <file>EffectRgb.qml</file>
+        <file>EffectEdge.qml</file>
+        <file>EffectSharpen.qml</file>
+        <file>EffectWave.qml</file>
+        <file>images/lines.png</file>
     </qresource>
 </RCC>

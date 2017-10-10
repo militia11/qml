@@ -37,26 +37,22 @@ Canvas {
             return
         }
 
+        if(fillWhite) {
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, 0, width, height)
+            fillWhite = false
+        }
+
         if (repaintImage) {
             repaintImageInCanvas(ctx)
             return
         }
 
-        if(fillWhite) {
-            ctx.fillStyle = "white"
-            ctx.fillRect(0, 0, width, height)
-            fillWhite = false
-            return
-        }
-
-        if (mode == CanvasModes.DRAWING) {
+        if (mode == CanvasModes.DRAWING || mode == CanvasModes.RUBBER) {
             ctx.strokeStyle = colorStroke
             drawing(ctx)
         } else if (mode == CanvasModes.ADDSHAPES) {
             drawShape(ctx)
-        } else if(mode == CanvasModes.RUBBER) {
-            ctx.strokeStyle = canvasBackground.color
-            drawing(ctx)
         }
     }
 
@@ -77,7 +73,7 @@ Canvas {
                     particleEmitterDrawing.enabled = true
                     particleSysDrawing.running = true
                 }
-                    //particlesEmmiterDraw.burst(110)
+                    // particlesEmmiterDraw.burst(110)
             }
         }
 
@@ -100,7 +96,7 @@ Canvas {
                 if(mode == CanvasModes.ADDSHAPES) {
                      shapeWidth = mouseX - lastX
                      shapeHeight = mouseY - lastY
-                } else if(mode == CanvasModes.RUBBER){}
+                }
 
                 requestPaint()
             }
@@ -112,7 +108,7 @@ Canvas {
         running: false
         ImageParticle {
             source: "qrc:///images/star.png"//bubble
-            color: tools.colorFill
+            color: tools.colorStroke
             colorVariation: 0.15
             rotation: 0
             rotationVariation: 52
@@ -143,7 +139,6 @@ Canvas {
                anchors.fill: root
         }
     }
-
 
 //    ParticleSystem {
 //        x: area.mouseX

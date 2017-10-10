@@ -28,7 +28,7 @@
 import QtQuick 2.0
 
 Canvas {
-   id: canvas
+   id: can
    parent: item1
    width: 800; height: 450
 
@@ -52,8 +52,8 @@ Canvas {
       repeat: true
       triggeredOnStart: true
       onTriggered: {
-         canvas.requestLine = true
-         canvas.requestPaint()
+         can.requestLine = true
+         can.requestPaint()
       }
    }
 
@@ -63,8 +63,8 @@ Canvas {
       repeat: true
       triggeredOnStart: true
       onTriggered: {
-          canvas.requestBlank = true
-          canvas.requestPaint()
+          can.requestBlank = true
+          can.requestPaint()
       }
    }
 
@@ -74,11 +74,28 @@ Canvas {
        y: 48
        sourceImage: "qrc:/images/camera.png"
 
-
        onActivate: {
-
+           capture()
+           timers.delayAfterCapture()
        }
    }
+
+   function capture() {
+       lineTimer.stop()
+       blankTimer.stop()
+       var url = can.toDataURL('image/png')
+       tImage.source = url
+       tImage.update()
+       tImage.source = url
+       canvas.repaintImage = true;
+       timers.requestPaintAfterDelay()
+       fancyCanvasButton.x += 160
+       fancyCanvasButton1.x += 240
+       fancyCanvasButton.opacity = 0
+       fancyCanvasButton1.opacity = 0
+
+       timerDelayReturnedIcon.running = true
+    }
 
    FancyCanvasButton {
        id: fancyCanvasButton1
@@ -87,13 +104,26 @@ Canvas {
        sourceImage: "qrc:/images/no.png"
 
        onActivate: {
-           pathViewButtons.interactive = true
-           loaderOnCanvas.deactivateLoader();
-           mainButtons.activeButtons()
-           mainButtons.disableChecked()
+           fancyCanvasButton.x += 160
+           fancyCanvasButton1.x += 240
+           fancyCanvasButton.opacity = 0
+           fancyCanvasButton1.opacity = 0
+
+           timerDelayReturnedIcon.running = true
        }
    }
-
+    Timer {
+        id: timerDelayReturnedIcon
+        interval: 1000
+        repeat: false
+        running: false
+        onTriggered: {
+            pathViewButtons.interactive = true
+            loaderOnCanvas.deactivateLoader();
+            mainButtons.activeButtons()
+            mainButtons.disableChecked()
+        }
+    }
    onPaint: {
       var context = getContext('2d')
       if(requestLine) {
@@ -108,18 +138,18 @@ Canvas {
 
    function line(context) {
       context.save()
-      context.translate(canvas.width/2, canvas.height/2)
+      context.translate(can.width/2, can.height/2)
       context.scale(0.9, 0.9)
-      context.translate(-canvas.width/2, -canvas.height/2)
+      context.translate(-can.width/2, -can.height/2)
       context.beginPath()
       context.lineWidth = 5 + Math.random() * 10
       context.moveTo(lastX, lastY)
-      lastX = canvas.width * Math.random()
-      lastY = canvas.height * Math.random()
-      context.bezierCurveTo(canvas.width * Math.random(),
-                            canvas.height * Math.random(),
-                            canvas.width * Math.random(),
-                            canvas.height * Math.random(),
+      lastX = can.width * Math.random()
+      lastY = can.height * Math.random()
+      context.bezierCurveTo(can.width * Math.random(),
+                            can.height * Math.random(),
+                            can.width * Math.random(),
+                            can.height * Math.random(),
                             lastX, lastY);
 
       hue += Math.random()*0.1
@@ -135,7 +165,7 @@ Canvas {
 
    function blank(context) {
       context.fillStyle = Qt.rgba(0,0,0,0.1)
-      context.fillRect(0, 0, canvas.width, canvas.height)
+      context.fillRect(0, 0, can.width, can.height)
    }
 
    Component.onCompleted: {

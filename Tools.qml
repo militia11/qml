@@ -139,6 +139,7 @@ Item {
     }
 
     function resetVideo() { toolWave.resetValues() }
+
     function printToolTip(action) {
         var tip;
         switch(action) {

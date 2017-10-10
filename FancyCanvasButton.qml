@@ -28,10 +28,8 @@ Button {
 
     Behavior on x {
         PropertyAnimation {
-            duration: 1550
-            easing.type: Easing.OutExpo
-            //easing.type: Easing.InOutElastic
-            //easing.type: Easing.InExpo
+            duration: opacity ? 1000 : 1550
+            easing.type: opacity ?  Easing.InExpo : Easing.OutExpo
         }
     }
 
