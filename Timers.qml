@@ -31,6 +31,20 @@ Item {
            tools.resetVideo()
         }
     }
+
+    Timer {
+        id: timerRequestSave
+        interval: 400
+        repeat: false
+        running: false
+        onTriggered: {
+//            effects.currentEffect.grabToImage(function(result) {
+//                result.saveToFile("aaaaaaaa.png");
+//            });
+        }
+    }
+
+    function requestSave() { timerRequestSave.start() }
     function delayAfterCapture() { timerDelayAfterCapture.start() }
     function disabledScrollPathView() { timerScrollPathView.start() }
     function startScroll(){ timerScrollPathView.start()}

@@ -1,4 +1,4 @@
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Dialogs 1.0
 
 FileDialog {
@@ -12,7 +12,7 @@ FileDialog {
         sourceImage.update()
         canvas.loadImage = true
         canvas.requestPaint()
-  //      effects.switchActiveEffect("CURTAIN")
+     //   effects.switchActiveEffect("CURTAIN")
         pathViewButtons.activateEffectsButton()
         close()
     }

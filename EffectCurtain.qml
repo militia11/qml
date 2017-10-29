@@ -28,8 +28,11 @@
 // M1>>
 import QtQuick 2.0
 
-Effect {
+ShaderEffect {
     id: root
+    width: canvas.width; height: canvas.height
+    x: canvas.x; y: canvas.y
+
     mesh: GridMesh {
         resolution: Qt.size(50, 50)
     }
@@ -42,7 +45,7 @@ Effect {
         }
     }
 
-    //onBottomWidthChanged: {
+//  onBottomWidthChanged: {
 //        if(bottomWidth >= sourceImage.width) {
 //             canvas.loadImage = true
 //             canvas.requestPaint()
@@ -61,6 +64,8 @@ Effect {
             velocity: 250; mass: 1.5;
             spring: 0.5; damping: 0.05
         }
+
+
     }
 
     Behavior on topWidth {
@@ -70,6 +75,7 @@ Effect {
     ShaderEffectSource {
         id: effectSource
         sourceItem: sourceImage;
+        width: canvas.width; height: canvas.height
         hideSource: true
     }
 

@@ -124,11 +124,19 @@ Item {
         switch(effect) {
             case "GENIE":
                 currentEffect = eGenie
+                activate()
+                effects.currentEffect.grabToImage(function(result) {
+                    result.saveToFile("aaaaaaaa.png");
+                });
+                canvas.repaintImage = true;
+                timers.requestPaintAfterDelay()
+                timers.requestSave()
                 break
             case "CURTAIN":
+                canvas.visible = false
+                onCanvas()
                 currentEffect = eCurtain
                 visibleEffect()
-                onCanvas()
                 return
             case "COLORS":
                 currentEffect = eRgb;

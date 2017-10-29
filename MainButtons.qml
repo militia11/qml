@@ -79,8 +79,9 @@ Item {
         MainButton {
             id: save
             sourceImage: "qrc:///images/save.png"
-            onClicked:
+            onClicked: {
                 effects.switchActiveEffect("GENIE")
+            }
         }
 
         MainButton {
